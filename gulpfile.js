@@ -18,6 +18,10 @@ var webpack = require('webpack');
 var webpackStream = require('webpack-stream');
 var replace = require('gulp-replace');
 var gulpIf = require('gulp-if');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ignore = require('gulp-ignore');
+
+
 
 var jasmine = require('gulp-jasmine');
 
@@ -52,7 +56,8 @@ gulp.task('stylus-no-clean', stylusTask);
 gulp.task('tsc', ['tsc-src'], tscExportsTask);
 gulp.task('tsc-src', ['cleanDist'], tscTask);
 gulp.task('tsc-exports', ['cleanExports'], tscExportsTask);
-gulp.task('stylus', ['cleanDist'], stylusTask);
+gulp.task('scss', ['cleanDist'], scssTask);
+gulp.task('stylus', ['cleanDist', 'scss'], stylusTask);
 
 gulp.task('cleanDist', cleanDist);
 gulp.task('cleanExports', cleanExports);
@@ -155,3 +160,29 @@ function stylusTask() {
         .pipe(gulp.dest('dist/styles'));
 }
 
+function scssTask() {
+    return gulp.src('src/styles/theme-material-next-entry.js')
+        .pipe(webpackStream({
+            entry: "./src/styles/theme-material-next-entry.js",
+            output: {
+                path: path.join(__dirname, "dist")
+            },
+            module: {
+                loaders: [
+                    { 
+                        test: /\.scss$/, 
+                        use: ExtractTextPlugin.extract({ fallback: "style-loader", use: [ "css-loader", "sass-loader"  ]})
+                    },
+                    { 
+                        test: /\.styl$/, 
+                        use: ExtractTextPlugin.extract({ fallback: "style-loader", use: [ "css-loader", { loader: "stylus-loader", options: {  use: [ nib() ] } }  ]})
+                    }
+                ]
+            },
+            plugins: [
+                new ExtractTextPlugin("theme-material-next.css")
+            ]
+        }, webpack))
+        .pipe(ignore('**.js'))
+        .pipe(gulp.dest('./dist/'));
+}

@@ -1,0 +1,102 @@
+$regular: 400;
+$medium: 500;
+
+$accent:#9C27B0;
+$primary: rgba(black, .87);
+$secondary: rgba(black, .54);
+$divider: rgba(black, .12);
+$selected-background: #f5f5f5;
+$hover-background: #eeeeee;
+$header-height: 56px;
+$row-height: 48px;
+
+.ag-material-next {
+
+    .ag-font-style {
+        font-family: 'Roboto', sans-serif;
+        font-weight: $regular;
+        color: $primary;
+        font-size: 13px;
+    }
+
+    .ag-header {
+        font-weight: $medium;
+        font-size: 12px;
+        color: $secondary;
+    }
+
+    .ag-header-cell, .ag-cell {
+        text-align: left;
+        padding-right: 24px;
+    }
+
+    .ag-header-cell {
+        line-height: $header-height - 1;
+        min-height: $header-height - 1;
+    }
+
+    .ag-numeric-header {
+        text-align: right;
+    }
+
+    .ag-numeric-cell {
+        text-align: right;
+    }
+
+    .ag-header {
+        border-bottom: 1px solid $divider;
+    }
+
+    .ag-cell, .ag-header-cell {
+        padding-right: 24px;
+    }
+
+    .ag-cell:first-child, .ag-header-cell:first-child {
+        padding-left: 24px;
+    }
+
+    .ag-row {
+        border-bottom: 1px solid $divider;
+        transition: background-color 120ms linear;
+    }
+
+    .ag-row:hover {
+        background-color: $hover-background;
+    }
+
+    .ag-row:last-child {
+        border-bottom: 0;
+    }
+
+    .ag-cell {
+        line-height: $row-height - 1;
+        min-height: $row-height - 1;
+        transition: all 250ms linear;
+        outline-color: $divider;
+    }
+
+    .ag-cell:focus {
+        background-color: $selected-background;
+        outline: 1px solid $divider;
+    }
+}
+
+.ag-dnd-ghost {
+    font-family: 'Roboto', sans-serif;
+    font-size: 10px;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    transform: translatey(32px);
+    color: $secondary;
+    background: #FAFAFA;
+    padding: 6px;
+    border: 0;
+}
+.ag-dnd-ghost img {
+    filter: grayscale(1) brightness(0);
+    opacity: 0.8;
+}
+
+.ag-dnd-ghost-icon {
+    padding-left: 0px;
+    padding-right: 2px;
+}
