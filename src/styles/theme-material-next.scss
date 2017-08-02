@@ -33,7 +33,7 @@ $row-height: 48px;
         padding-right: 24px;
     }
 
-    .ag-header-cell-sortable {
+    .ag-header-cell-sortable .ag-header-cell-label{
         cursor: pointer;
     }
 
@@ -41,6 +41,42 @@ $row-height: 48px;
         display: inline-block !important;
     }
 
+    .ag-header-cell-sortable .ag-header-cell-label {
+        display: inline-flex;
+        flex-direction: row-reverse;
+    }
+
+    .ag-numeric-header .ag-header-cell-label {
+        flex-direction: row;
+    }
+
+    .ag-header-cell-sorted-none .ag-header-cell-label:hover .ag-sort-ascending-icon {
+        display: block !important; 
+        opacity: 0.38;
+    }
+
+    .ag-sort-ascending-icon svg, .ag-sort-descending-icon svg {
+        display: none;
+    }
+
+    .ag-sort-ascending-icon::before,
+    .ag-sort-descending-icon::before {
+        content: ' ';
+        background-size: 12px 12px;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 12px;
+        height: 12px;
+        margin-bottom: -2px;
+        margin-left: 2px;
+        margin-right: 2px;
+        display: inline-block;
+        background-image: url('./icons/arrow-up.svg'); 
+    }
+
+    .ag-sort-descending-icon::before {
+        background-image: url('./icons/arrow-down.svg'); 
+    }
 
     .ag-header-cell {
         line-height: $header-height - 1;
@@ -79,13 +115,13 @@ $row-height: 48px;
     .ag-cell {
         line-height: $row-height - 1;
         min-height: $row-height - 1;
-        transition: all 250ms linear;
+        transition: all 200ms linear;
         outline-color: $divider;
     }
 
     .ag-cell:focus {
-        background-color: $selected-background;
-        outline: 1px solid $divider;
+        outline: inherit;
+        box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     }
 }
 
