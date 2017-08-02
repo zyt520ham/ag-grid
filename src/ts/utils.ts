@@ -785,6 +785,7 @@ export class Utils {
      */
     static createIcon(iconName: string, gridOptionsWrapper: GridOptionsWrapper, column: Column, svgFactoryFunc: () => HTMLElement): HTMLElement {
         let eResult = document.createElement('span');
+        eResult.classList.add(iconName);
         eResult.appendChild(this.createIconNoSpan(iconName, gridOptionsWrapper, column, svgFactoryFunc));
         return eResult;
     }
