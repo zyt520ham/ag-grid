@@ -33,7 +33,9 @@ $background: white;
 
     .ag-header-cell, .ag-cell {
         text-align: left;
-        padding-right: 24px;
+    }
+
+    .ag-header-cell {
     }
 
     .ag-header-cell-sortable .ag-header-cell-label{
@@ -99,12 +101,18 @@ $background: white;
         text-align: right;
     }
 
+    .ag-header-cell-resize {
+        margin-right: -24px;
+        border-right: 1px solid $divider;
+    }
+
     .ag-header {
         border-bottom: 1px solid $divider;
     }
 
     .ag-cell, .ag-header-cell {
-        padding-right: 56px;
+        padding-right: 24px;
+        padding-left: 24px;
     }
 
     .ag-cell:first-child, .ag-header-cell:first-child {
@@ -118,10 +126,6 @@ $background: white;
     .ag-row {
         border-bottom: 1px solid $divider;
         transition: background-color 120ms linear;
-    }
-
-    .ag-row:last-child {
-        border-bottom: none;
     }
 
     .ag-row-hover {
@@ -142,6 +146,7 @@ $background: white;
 
     .ag-header-cell-menu-button {
         opacity: 0.54 !important;
+        transform: translatey(2px);
     }
 
     .ag-cell-label-container {
