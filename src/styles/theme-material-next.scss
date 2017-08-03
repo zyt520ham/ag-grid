@@ -1,9 +1,13 @@
 $regular: 400;
 $medium: 500;
 
+$primary-black: .87;
+$secondary-black: .54;
+$faded-black: .38;
+
 $accent:#9C27B0;
-$primary: rgba(black, .87);
-$secondary: rgba(black, .54);
+$primary: rgba(black, $primary-black);
+$secondary: rgba(black, $secondary-black);
 $divider: rgba(black, .12);
 $selected-background: #f5f5f5;
 $hover-background: #eeeeee;
@@ -29,6 +33,11 @@ $background: white;
 
     .ag-header {
         @include secondary();
+    }
+
+    .ag-header-cell-sorted-asc, 
+    .ag-header-cell-sorted-desc {
+        color: $primary;
     }
 
     .ag-header-cell, .ag-cell {
@@ -64,13 +73,20 @@ $background: white;
         display: block !important; 
         opacity: 0.38;
     }
+    
+    .ag-header-cell-sorted-none .ag-header-cell-label:hover .ag-sort-none-icon {
+        display: none;
+    }
 
-    .ag-sort-ascending-icon svg, .ag-sort-descending-icon svg {
+    .ag-sort-ascending-icon svg, 
+    .ag-sort-descending-icon svg, 
+    .ag-sort-none-icon svg, {
         display: none;
     }
 
     .ag-sort-ascending-icon::before,
-    .ag-sort-descending-icon::before {
+    .ag-sort-descending-icon::before,
+    .ag-sort-none-icon::before {
         content: ' ';
         background-size: 16px 16px;
         background-repeat: no-repeat;
@@ -86,6 +102,11 @@ $background: white;
 
     .ag-sort-descending-icon::before {
         background-image: url('./icons/arrow-down.svg'); 
+    }
+
+    .ag-sort-none-icon::before {
+        opacity: 0.54; 
+        background-image: url('./icons/updown.svg'); 
     }
 
     .ag-header-cell {
@@ -135,7 +156,7 @@ $background: white;
     .ag-cell {
         line-height: $row-height - 1;
         min-height: $row-height - 1;
-        transition: all 100ms linear;
+        transition: border 100ms linear;
         border: 1px solid transparent;
     }
 
