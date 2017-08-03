@@ -171,11 +171,19 @@ function scssTask() {
                 loaders: [
                     { 
                         test: /\.scss$/, 
-                        use: ExtractTextPlugin.extract({ fallback: "style-loader", use: [ "css-loader", "sass-loader"  ]})
+                        use: ExtractTextPlugin.extract({ fallback: "style-loader", use: [ 
+                            { loader: "css-loader", options: {minimize: true} }, 
+                            "sass-loader", 
+                            { loader: "postcss-loader", options: { parser: require('postcss-scss'), plugins: [ require('autoprefixer') ] } }  
+                            ]})
                     },
                     { 
                         test: /\.styl$/, 
                         use: ExtractTextPlugin.extract({ fallback: "style-loader", use: [ "css-loader", { loader: "stylus-loader", options: {  use: [ nib() ] } }  ]})
+                    },
+                    {
+                        test: /\.(png|jpg|gif|svg)$/,
+                        use: [ { loader: 'url-loader', options: { limit: 8193 }  } ]
                     }
                 ]
             },
