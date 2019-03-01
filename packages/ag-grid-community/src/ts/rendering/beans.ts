@@ -1,33 +1,34 @@
-import { Autowired, Bean, Context, Optional, PostConstruct } from "../context/context";
-import { ColumnApi } from "../columnController/columnApi";
-import { ColumnController } from "../columnController/columnController";
-import { GridApi } from "../gridApi";
-import { GridOptionsWrapper } from "../gridOptionsWrapper";
-import { ExpressionService } from "../valueService/expressionService";
-import { RowRenderer } from "./rowRenderer";
-import { TemplateService } from "../templateService";
-import { ValueService } from "../valueService/valueService";
-import { EventService } from "../eventService";
-import { ColumnAnimationService } from "./columnAnimationService";
-import { IRangeController } from "../interfaces/iRangeController";
-import { FocusedCellController } from "../focusedCellController";
-import { IContextMenuFactory } from "../interfaces/iContextMenuFactory";
-import { CellEditorFactory } from "./cellEditorFactory";
-import { CellRendererFactory } from "./cellRendererFactory";
-import { PopupService } from "../widgets/popupService";
-import { CellRendererService } from "./cellRendererService";
-import { ValueFormatterService } from "./valueFormatterService";
-import { StylingService } from "../styling/stylingService";
-import { ColumnHoverService } from "./columnHoverService";
-import { GridPanel } from "../gridPanel/gridPanel";
-import { PaginationProxy } from "../rowModels/paginationProxy";
-import { AnimationFrameService } from "../misc/animationFrameService";
-import { ComponentResolver } from "../components/framework/componentResolver";
-import { DragAndDropService } from "../dragAndDrop/dragAndDropService";
-import { SortController } from "../sortController";
-import { FilterManager } from "../filter/filterManager";
-import { MaxDivHeightScaler } from "./maxDivHeightScaler";
-import { TooltipManager } from "../widgets/tooltipManager";
+import {Autowired, Bean, Context, Optional, PostConstruct} from "../context/context";
+import {ColumnApi} from "../columnController/columnApi";
+import {ColumnController} from "../columnController/columnController";
+import {GridApi} from "../gridApi";
+import {GridOptionsWrapper} from "../gridOptionsWrapper";
+import {ExpressionService} from "../valueService/expressionService";
+import {RowRenderer} from "./rowRenderer";
+import {TemplateService} from "../templateService";
+import {ValueService} from "../valueService/valueService";
+import {EventService} from "../eventService";
+import {ColumnAnimationService} from "./columnAnimationService";
+import {IRangeController} from "../interfaces/iRangeController";
+import {FocusedCellController} from "../focusedCellController";
+import {IContextMenuFactory} from "../interfaces/iContextMenuFactory";
+import {CellEditorFactory} from "./cellEditorFactory";
+import {CellRendererFactory} from "./cellRendererFactory";
+import {PopupService} from "../widgets/popupService";
+import {CellRendererService} from "./cellRendererService";
+import {ValueFormatterService} from "./valueFormatterService";
+import {StylingService} from "../styling/stylingService";
+import {ColumnHoverService} from "./columnHoverService";
+import {GridPanel} from "../gridPanel/gridPanel";
+import {PaginationProxy} from "../rowModels/paginationProxy";
+import {AnimationFrameService} from "../misc/animationFrameService";
+import {ComponentResolver} from "../components/framework/componentResolver";
+import {DragAndDropService} from "../dragAndDrop/dragAndDropService";
+import {SortController} from "../sortController";
+import {FilterManager} from "../filter/filterManager";
+import {MaxDivHeightScaler} from "./maxDivHeightScaler";
+// SPL
+// import { TooltipManager } from "../widgets/tooltipManager";
 
 /** Using the IoC has a slight performance consideration, which is no problem most of the
  * time, unless we are trashing objects - which is the case when scrolling and rowComp
@@ -67,7 +68,8 @@ export class Beans {
     @Autowired('sortController') public sortController: SortController;
     @Autowired('filterManager') public filterManager: FilterManager;
     @Autowired('maxDivHeightScaler') public maxDivHeightScaler: MaxDivHeightScaler;
-    @Autowired('tooltipManager') public tooltipManager: TooltipManager;
+    // SPL
+    // @Autowired('tooltipManager') public tooltipManager: TooltipManager;
 
     public doingMasterDetail: boolean;
 

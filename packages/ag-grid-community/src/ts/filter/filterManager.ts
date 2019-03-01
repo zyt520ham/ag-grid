@@ -427,7 +427,9 @@ export class FilterManager {
     private createFilterInstance(column: Column, $scope: any): Promise<IFilterComp> {
         let defaultFilter: string = 'agTextColumnFilter';
 
-        if (this.gridOptionsWrapper.isEnterprise()) {
+        // SPL
+        if (this.gridOptionsWrapper.isEnterprise() &&
+            this.context.isModuleRegistered('setFilterModule')) {
             defaultFilter = 'agSetColumnFilter';
         }
         const sanitisedColDef: ColDef = _.cloneObject(column.getColDef());

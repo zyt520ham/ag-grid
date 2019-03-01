@@ -22,3 +22,7 @@
 	path = packages/ag-grid-charts-example
 	url = https://github.com/ag-grid/ag-grid-charts-example.git
     branch = latest
+[submodule "packages/ag-grid-typescript-webpack"]
+	path = packages/ag-grid-typescript-webpack
+	url = https://github.com/seanlandsman/ag-grid-typescript-webpack.git
+    branch = latest

@@ -302,7 +302,8 @@ export { IFrameworkFactory } from "./interfaces/iFrameworkFactory";
 export { SerializedNumberFilter } from "./filter/numberFilter";
 export { Environment } from "./environment";
 export { ITooltipComp, ITooltipParams } from "./rendering/tooltipComponent";
-export { TooltipManager } from "./widgets/tooltipManager";
+// SPL
+// export { TooltipManager } from "./widgets/tooltipManager";
 
 //  events
 export { AgEvent, AgGridEvent, ModelUpdatedEvent, ColumnPivotModeChangedEvent, VirtualColumnsChangedEvent,
@@ -321,3 +322,5 @@ export { AgEvent, AgGridEvent, ModelUpdatedEvent, ColumnPivotModeChangedEvent, V
     RowDragEvent, RowDragLeaveEvent, RowDragEnterEvent, RowDragEndEvent, RowDragMoveEvent, ToolPanelVisibleChangedEvent,
     PasteEndEvent, PasteStartEvent, GridSizeChangedEvent }
     from "./events";
+
+export {Module} from "./interfaces/iModule";

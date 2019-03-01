@@ -269,8 +269,8 @@ export class HeaderWrapperComp extends Component {
 
         if (this.gridOptionsWrapper.isEnableBrowserTooltips()) {
             this.getGui().setAttribute('title', tooltipText);
-        } else {
-            this.beans.tooltipManager.registerTooltip(this);
+        } else if(this.context.isModuleRegistered('tooltipModule')) { // SPL
+            this.beans.context.getBean('tooltipManager').registerTooltip(this);
         }
     }
 

@@ -1,5 +1,5 @@
 import { Autowired, Bean, CellEditorFactory, ComponentProvider, FilterManager, PostConstruct } from "ag-grid-community";
-import { SetFilter } from "./setFilter/setFilter";
+// import { SetFilter } from "./setFilter/setFilter"; // SPL
 import { RichSelectCellEditor } from "./rendering/richSelect/richSelectCellEditor";
 import { LicenseManager } from "./licenseManager";
 import { DetailCellRenderer } from "./rendering/detail/detailCellRenderer";
@@ -23,7 +23,7 @@ export class EnterpriseBoot {
     private init(): void {
         this.componentProvider.registerDefaultComponent('agRichSelect', RichSelectCellEditor);
         this.componentProvider.registerDefaultComponent('agRichSelectCellEditor', RichSelectCellEditor);
-        this.componentProvider.registerDefaultComponent('agSetColumnFilter', SetFilter);
+        // this.componentProvider.registerDefaultComponent('agSetColumnFilter', SetFilter); // SPL
         this.componentProvider.registerDefaultComponent('agDetailCellRenderer', DetailCellRenderer);
         this.componentProvider.registerDefaultComponent('agAggregationComponent', AggregationComp);
         this.componentProvider.registerDefaultComponent('agColumnsToolPanel', ColumnToolPanel);
@@ -33,5 +33,4 @@ export class EnterpriseBoot {
         this.componentProvider.registerDefaultComponent('agFilteredRowCountComponent', FilteredRowsComp);
         this.componentProvider.registerDefaultComponent('agTotalAndFilteredRowCountComponent', TotalAndFilteredRowsComp);
     }
-
 }

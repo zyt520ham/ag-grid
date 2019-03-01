@@ -2,10 +2,11 @@ import {
     AgEvent,
     Autowired,
     Component,
+    Context,
     GridOptionsWrapper,
     MenuItemDef,
     PostConstruct,
-    TooltipManager,
+    // TooltipManager, // SPL
     _
 } from "ag-grid-community";
 
@@ -25,9 +26,8 @@ export interface MenuItemSelectedEvent extends AgEvent {
 export class MenuItemComponent extends Component {
 
     @Autowired('gridOptionsWrapper') private gridOptionsWrapper: GridOptionsWrapper;
-    @Autowired('tooltipManager') private tooltipManager: TooltipManager;
-
-    // private instance = Math.random();
+    // SPL
+    @Autowired('context') private context: Context;
 
     private static TEMPLATE =
         `<div class="ag-menu-option">
@@ -71,8 +71,8 @@ export class MenuItemComponent extends Component {
             this.tooltip = this.params.tooltip;
             if (this.gridOptionsWrapper.isEnableBrowserTooltips()) {
                 this.getGui().setAttribute('title', this.tooltip);
-            } else {
-                this.tooltipManager.registerTooltip(this);
+            } else if(this.context.isModuleRegistered('tooltipModule')) { // SPL
+                this.context.getBean('tooltipManager').registerTooltip(this);
             }
         }
 

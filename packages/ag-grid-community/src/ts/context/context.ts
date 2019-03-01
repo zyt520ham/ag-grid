@@ -17,6 +17,8 @@ export interface ContextParams {
     components: ComponentMeta[];
     enterpriseDefaultComponents: any[];
     overrideBeans: any[];
+    // SPL
+    registeredModules: string[];
     debug: boolean;
 }
 
@@ -35,6 +37,8 @@ export class Context {
 
     private beanWrappers: { [key: string]: BeanWrapper } = {};
     private contextParams: ContextParams;
+    // SPL
+    private registeredModules: string[];
     private logger: ILogger;
 
     private componentsMappedByName: { [key: string]: any } = {};
@@ -47,6 +51,9 @@ export class Context {
         }
 
         this.contextParams = params;
+
+        // SPL
+        this.registeredModules = params.registeredModules;
 
         this.logger = logger;
         this.logger.log(">> creating ag-Application Context");
@@ -64,6 +71,11 @@ export class Context {
 
     private getBeanInstances(): any[] {
         return _.mapObject(this.beanWrappers, beanEntry => beanEntry.beanInstance);
+    }
+
+    // SPL
+    public isModuleRegistered(moduleName: string) : boolean {
+        return this.registeredModules.indexOf(moduleName) !== -1;
     }
 
     private setupComponents(): void {

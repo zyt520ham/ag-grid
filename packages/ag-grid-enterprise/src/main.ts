@@ -31,8 +31,8 @@ import { WatermarkComp } from "./license/watermark";
 
 export { AggregationStage } from "./rowStages/aggregationStage";
 export { GroupStage } from "./rowStages/groupStage";
-export { SetFilter } from "./setFilter/setFilter";
-export { SetFilterModel } from "./setFilter/setFilterModel";
+// export { SetFilter } from "./setFilter/setFilter"; // SPL
+// export { SetFilterModel } from "./setFilter/setFilterModel"; // SPL
 export { StatusBar } from "./statusBar/statusBar";
 export { StatusBarService } from "./statusBar/statusBarService";
 export { ClipboardService } from "./clipboardService";
@@ -56,7 +56,7 @@ export { PivotColDefService } from "./rowStages/pivotColDefService";
 export { PivotModePanel } from "./sideBar/providedPanels/columns/panels/pivotModePanel";
 export { AggFuncService } from "./aggregation/aggFuncService";
 export { MD5 } from "./license/md5";
-export { SetFilterListItem } from "./setFilter/setFilterListItem";
+// export { SetFilterListItem } from "./setFilter/setFilterListItem"; // SPL
 export { DropZoneColumnComp } from "./sideBar/providedPanels/columns/dropZone/dropZoneColumnComp";
 export { ValuesDropZonePanel } from "./sideBar/providedPanels/columns/panels/valueDropZonePanel";
 export { ExcelCreator } from "./exporter/excelCreator";

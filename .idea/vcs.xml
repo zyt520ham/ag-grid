@@ -7,6 +7,7 @@
     <mapping directory="$PROJECT_DIR$/packages/ag-grid-charts-example" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/ag-grid-polymer-example" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/ag-grid-react-example" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages/ag-grid-typescript-webpack" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/ag-grid-vue-example" vcs="Git" />
   </component>
 </project>

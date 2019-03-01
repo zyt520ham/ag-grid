@@ -6,7 +6,11 @@
     "declaration": true,
     "target": "es5",
     "noImplicitAny": true,
-    "outDir": "dist/lib"
+    "outDir": "dist/lib",
+    "lib": [
+      "dom",
+      "es2015"
+    ]
   },
   "include": [
     "src/ts/**/*"
