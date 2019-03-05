@@ -130,8 +130,9 @@ export class Grid {
     }
 
     // SPL
-    public static setModulesToInclude(modulesToInclude: Module[]): void {
-        this.modulesToInclude = modulesToInclude;
+    public static addModule(modulesToInclude: Module[]): void {
+        // de-duping would need to be done here (while ensuring order etc)
+        this.modulesToInclude.push(...modulesToInclude);
     }
 
     public static setFrameworkBeans(frameworkBeans: any[]): void {
