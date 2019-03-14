@@ -1,12 +1,12 @@
 import {autoinject, Container, transient, ViewResources} from "aurelia-framework";
-import {BaseFrameworkFactory, IFrameworkFactory} from "ag-grid-community";
+import {BaseFrameworkOverrides, IFrameworkOverrides} from "ag-grid-community";
 
 @autoinject()
 @transient()
-export class AureliaFrameworkFactory implements IFrameworkFactory {
+export class AureliaFrameworkFactory implements IFrameworkOverrides {
     private _container: Container;
     private _viewResources: ViewResources;
-    private _baseFrameworkFactory: IFrameworkFactory = new BaseFrameworkFactory();    // todo - inject this
+    private _baseFrameworkFactory: IFrameworkOverrides = new BaseFrameworkOverrides();
 
     public setContainer(container: Container): void {
         this._container = container;

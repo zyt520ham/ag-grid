@@ -1,9 +1,9 @@
-import { IEventEmitter } from "../interfaces/iEventEmitter";
-import { EventService } from "../eventService";
-import { GridOptionsWrapper } from "../gridOptionsWrapper";
-import { AgEvent } from "../events";
-import { Autowired, Context, PreDestroy } from "./context";
-import { _ } from "../utils";
+import {IEventEmitter} from "../interfaces/iEventEmitter";
+import {EventService} from "../eventService";
+import {GridOptionsWrapper} from "../gridOptionsWrapper";
+import {AgEvent} from "../events";
+import {Autowired, Context, PreDestroy} from "./context";
+import {_} from "../utils";
 
 export class BeanStub implements IEventEmitter {
 
@@ -75,17 +75,22 @@ export class BeanStub implements IEventEmitter {
     }
 
     public addDestroyableEventListener(eElement: Window | HTMLElement | IEventEmitter | GridOptionsWrapper, event: string, listener: (event?: any) => void): void {
-        if (this.destroyed) { return; }
-
-        if (eElement instanceof HTMLElement) {
-            _.addSafePassiveEventListener((eElement as HTMLElement), event, listener);
-        } else if (eElement instanceof Window) {
-            (eElement as Window).addEventListener(event, listener);
-        } else if (eElement instanceof GridOptionsWrapper) {
-            (eElement as GridOptionsWrapper).addEventListener(event, listener);
-        } else {
-            (eElement as IEventEmitter).addEventListener(event, listener);
+        if (this.destroyed) {
+            return;
         }
+
+        // spl
+        this.context.getBean('frameworkOverrides').processEventListenerFunc(event, () => {
+            if (eElement instanceof HTMLElement) {
+                _.addSafePassiveEventListener((eElement as HTMLElement), event, listener);
+            } else if (eElement instanceof Window) {
+                (eElement as Window).addEventListener(event, listener);
+            } else if (eElement instanceof GridOptionsWrapper) {
+                (eElement as GridOptionsWrapper).addEventListener(event, listener);
+            } else {
+                (eElement as IEventEmitter).addEventListener(event, listener);
+            }
+        });
 
         this.destroyFunctions.push(() => {
             if (eElement instanceof HTMLElement) {

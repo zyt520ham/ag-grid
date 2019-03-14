@@ -213,7 +213,7 @@ export { XmlElement } from "./exporter/xmlFactory";
 export { ZipContainer } from "./exporter/files/zip/zipContainer";
 
 // root
-export { BaseFrameworkFactory } from "./baseFrameworkFactory";
+export { BaseFrameworkOverrides } from "./baseFrameworkOverrides";
 export { CellNavigationService } from "./cellNavigationService";
 export { AlignedGridsService } from "./alignedGridsService";
 export { Constants } from "./constants";
@@ -296,7 +296,7 @@ export { IRichCellEditorParams } from "./interfaces/iRichCellEditorParams";
 export { WrapableInterface } from "./components/framework/frameworkComponentWrapper";
 export { BaseComponentWrapper } from "./components/framework/frameworkComponentWrapper";
 export { FrameworkComponentWrapper } from "./components/framework/frameworkComponentWrapper";
-export { IFrameworkFactory } from "./interfaces/iFrameworkFactory";
+export { IFrameworkOverrides } from "./interfaces/IFrameworkOverrides";
 export { SerializedNumberFilter } from "./filter/numberFilter";
 export { Environment } from "./environment";
 export { ITooltipComp, ITooltipParams } from "./rendering/tooltipComponent";

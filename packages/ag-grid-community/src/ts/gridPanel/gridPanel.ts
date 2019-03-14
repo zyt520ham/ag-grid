@@ -437,6 +437,7 @@ export class GridPanel extends Component {
     private addMouseListeners(): void {
         const eventNames = ['click', 'mousedown', 'dblclick', 'contextmenu', 'mouseover', 'mouseout'];
 
+        // spl
         eventNames.forEach(eventName => {
             const listener = this.processMouseEvent.bind(this, eventName);
             this.eAllCellContainers.forEach(container =>

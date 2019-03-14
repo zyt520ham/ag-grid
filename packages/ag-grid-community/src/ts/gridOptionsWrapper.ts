@@ -22,7 +22,7 @@ import { Autowired, Bean, PostConstruct, PreDestroy, Qualifier } from "./context
 import { ColumnApi } from "./columnController/columnApi";
 import { ColumnController } from "./columnController/columnController";
 import { IViewportDatasource } from "./interfaces/iViewportDatasource";
-import { IFrameworkFactory } from "./interfaces/iFrameworkFactory";
+import { IFrameworkOverrides } from "./interfaces/IFrameworkOverrides";
 import { IDatasource } from "./rowModels/iDatasource";
 import { GridCellDef } from "./entities/gridCell";
 import { IServerSideDatasource } from "./interfaces/iServerSideDatasource";
@@ -91,7 +91,6 @@ export class GridOptionsWrapper {
     @Autowired('columnController') private columnController: ColumnController;
     @Autowired('eventService') private eventService: EventService;
     @Autowired('enterprise') private enterprise: boolean;
-    @Autowired('frameworkFactory') private frameworkFactory: IFrameworkFactory;
     @Autowired('gridApi') private gridApi: GridApi;
     @Autowired('columnApi') private columnApi: ColumnApi;
     @Autowired('environment') private environment: Environment;

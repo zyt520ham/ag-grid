@@ -48,6 +48,7 @@ export class TooltipManager {
         const el = targetCmp.getGui();
         const id = targetCmp.getCompId();
 
+        // spl
         targetCmp.addDestroyableEventListener(el, 'mouseover', (e) => this.processMouseOver(e, targetCmp));
         targetCmp.addDestroyableEventListener(el, 'mousemove', (e) => this.processMouseMove(e));
         targetCmp.addDestroyableEventListener(el, 'mousedown', this.hideTooltip.bind(this));

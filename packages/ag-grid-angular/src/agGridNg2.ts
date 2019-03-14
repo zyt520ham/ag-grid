@@ -25,7 +25,7 @@ import {
     Utils as _
 } from "ag-grid-community";
 
-import { Ng2FrameworkFactory } from "./ng2FrameworkFactory";
+import { AngularOverrides } from "./angularOverrides";
 import { AgGridColumn } from "./agGridColumn";
 import { Ng2FrameworkComponentWrapper } from "./ng2FrameworkComponentWrapper";
 
@@ -33,7 +33,7 @@ import { Ng2FrameworkComponentWrapper } from "./ng2FrameworkComponentWrapper";
     selector: 'ag-grid-angular',
     template: '',
     providers: [
-        Ng2FrameworkFactory,
+        AngularOverrides,
         Ng2FrameworkComponentWrapper
     ],
     // tell angular we don't want view encapsulation, we don't want a shadow root
@@ -62,7 +62,7 @@ export class AgGridNg2 implements AfterViewInit {
 
     constructor(elementDef: ElementRef,
                 private viewContainerRef: ViewContainerRef,
-                private ng2FrameworkFactory: Ng2FrameworkFactory,
+                private angularOverrides: AngularOverrides,
                 private frameworkComponentWrapper: Ng2FrameworkComponentWrapper,
                 private _componentFactoryResolver: ComponentFactoryResolver) {
         this._nativeElement = elementDef.nativeElement;
@@ -78,7 +78,7 @@ export class AgGridNg2 implements AfterViewInit {
 
         this.gridParams = {
             globalEventListener: this.globalEventListener.bind(this),
-            frameworkFactory: this.ng2FrameworkFactory,
+            frameworkOverrides: this.angularOverrides,
             seedBeanInstances: {
                 frameworkComponentWrapper: this.frameworkComponentWrapper
             }

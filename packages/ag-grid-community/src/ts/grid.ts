@@ -38,8 +38,8 @@ import { ClientSideRowModel } from "./rowModels/clientSide/clientSideRowModel";
 import { CellRendererFactory } from "./rendering/cellRendererFactory";
 import { ValueFormatterService } from "./rendering/valueFormatterService";
 import { AgCheckbox } from "./widgets/agCheckbox";
-import { BaseFrameworkFactory } from "./baseFrameworkFactory";
-import { IFrameworkFactory } from "./interfaces/iFrameworkFactory";
+import { BaseFrameworkOverrides } from "./baseFrameworkOverrides";
+import { IFrameworkOverrides } from "./interfaces/IFrameworkOverrides";
 import { ScrollVisibleService } from "./gridPanel/scrollVisibleService";
 import { Downloader } from "./exporter/downloader";
 import { XmlFactory } from "./exporter/xmlFactory";
@@ -86,7 +86,7 @@ export interface GridParams {
     quickFilterOnScope?: any;
 
     // this allows the base frameworks (React, NG2, etc) to provide alternative cellRenderers and cellEditors
-    frameworkFactory?: IFrameworkFactory;
+    frameworkOverrides?: IFrameworkOverrides;
 
     //bean instances to add to the context
     seedBeanInstances?: {[key:string]:any};
@@ -145,9 +145,9 @@ export class Grid {
 
         const enterprise = _.exists(Grid.enterpriseBeans);
 
-        let frameworkFactory = params ? params.frameworkFactory : null;
-        if (_.missing(frameworkFactory)) {
-            frameworkFactory = new BaseFrameworkFactory();
+        let frameworkOverrides = params ? params.frameworkOverrides : null;
+        if (_.missing(frameworkOverrides)) {
+            frameworkOverrides = new BaseFrameworkOverrides();
         }
 
         let overrideBeans:any[] = [];
@@ -168,7 +168,7 @@ export class Grid {
             $compile: params ? params.$compile : null,
             quickFilterOnScope: params ? params.quickFilterOnScope : null,
             globalEventListener: params ? params.globalEventListener : null,
-            frameworkFactory: frameworkFactory
+            frameworkOverrides
         };
         if (params && params.seedBeanInstances) {
             _.assign(seed, params.seedBeanInstances);
