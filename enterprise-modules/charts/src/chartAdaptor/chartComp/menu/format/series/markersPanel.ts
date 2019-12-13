@@ -15,7 +15,7 @@ export class MarkersPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="seriesMarkersGroup">
+            <ag-group-component ref="seriesMarkersGroup" data-group-class="ag-charts-group">
                 <ag-slider ref="seriesMarkerMinSizeSlider"></ag-slider>
                 <ag-slider ref="seriesMarkerSizeSlider"></ag-slider>
                 <ag-slider ref="seriesMarkerStrokeWidthSlider"></ag-slider>

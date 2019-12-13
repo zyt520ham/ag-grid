@@ -15,7 +15,7 @@ export class ShadowPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="shadowGroup">
+            <ag-group-component ref="shadowGroup" data-group-class="ag-charts-group">
                 <ag-color-picker ref="shadowColorPicker"></ag-color-picker>
                 <ag-slider ref="shadowBlurSlider"></ag-slider>
                 <ag-slider ref="shadowXOffsetSlider"></ag-slider>

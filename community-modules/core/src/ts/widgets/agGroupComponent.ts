@@ -10,27 +10,14 @@ type GroupItem = Component | HTMLElement;
 interface GroupParams {
     title: string;
     enabled: boolean;
-    suppressEnabledCheckbox: boolean;
-    suppressOpenCloseIcons: boolean;
+    suppressEnabledCheckbox?: boolean;
+    suppressOpenCloseIcons?: boolean;
+    cssClass?: string;
     items?: GroupItem[];
     alignItems?: 'start' | 'end' | 'center' | 'stretch'; // center by default
 }
 
 export class AgGroupComponent extends Component {
-    private static TEMPLATE =
-        `<div class="ag-group-component">
-            <div class="ag-group-component-title-bar" ref="groupTitle">
-                 <span class="ag-column-group-icons">
-                    <span class="ag-column-group-opened-icon" ref="eGroupOpenedIcon"></span>
-                    <span class="ag-column-group-closed-icon" ref="eGroupClosedIcon"></span>
-                </span>
-                <span ref="lbGroupTitle" class="ag-group-component-title"></span>
-            </div>
-            <div ref="eToolbar" class="ag-group-component-toolbar">
-                <ag-checkbox ref="cbGroupEnabled"></ag-checkbox>
-            </div>
-            <div ref="eContainer" class="ag-group-component-container"></div>
-        </div>`;
 
     private items: GroupItem[];
     private title: string;
@@ -52,7 +39,7 @@ export class AgGroupComponent extends Component {
     @RefSelector("eContainer") private groupContainer: HTMLElement;
 
     constructor(params?: GroupParams) {
-        super(AgGroupComponent.TEMPLATE);
+        super(AgGroupComponent.getTemplate(params));
 
         if (!params) {
             params = {} as GroupParams;
@@ -73,6 +60,32 @@ export class AgGroupComponent extends Component {
         if (suppressOpenCloseIcons != null) {
             this.suppressOpenCloseIcons = suppressOpenCloseIcons;
         }
+    }
+
+    private static getTemplate(params?: GroupParams) {
+        const groupClass = params && params.cssClass;
+        if (!groupClass) {
+            throw new Error('Missing groupClass param');
+        }
+        return `<div class="ag-group ${groupClass}">
+            <div class="ag-group-title-bar ${groupClass}-title-bar" ref="groupTitle">
+                <span class="ag-group-title-bar-icon ${groupClass}-title-bar-icon" ref="eGroupOpenedIcon"></span>
+                <span class="ag-group-title-bar-icon ${groupClass}-title-bar-icon" ref="eGroupClosedIcon"></span>
+                <span ref="lbGroupTitle" class="ag-group-title ${groupClass}-title"></span>
+            </div>
+            <div ref="eToolbar" class="ag-group-toolbar ${groupClass}-toolbar">
+                <ag-checkbox ref="cbGroupEnabled"></ag-checkbox>
+            </div>
+            <div ref="eContainer" class="ag-group-container ${groupClass}-container"></div>
+        </div>`;
+    }
+
+    public static getParamsFromElement(el: HTMLElement): GroupParams {
+        const groupClass = el.getAttribute("data-group-class");
+        if (!groupClass) {
+            throw new Error('<ag-group-component> elements must define the data-group-class attribute');
+        }
+        return { cssClass: groupClass };
     }
 
     @PostConstruct
@@ -113,9 +126,9 @@ export class AgGroupComponent extends Component {
     }
 
     private setOpenClosedIcons(): void {
-        const folderOpen = this.expanded;
-        _.setDisplayed(this.eGroupClosedIcon, !folderOpen);
-        _.setDisplayed(this.eGroupOpenedIcon, folderOpen);
+        const showIcon = !this.suppressOpenCloseIcons;
+        _.setDisplayed(this.eGroupClosedIcon, showIcon && !this.expanded);
+        _.setDisplayed(this.eGroupOpenedIcon, showIcon && this.expanded);
     }
 
     public isExpanded(): boolean {
@@ -126,11 +139,11 @@ export class AgGroupComponent extends Component {
         const eGui = this.getGui();
 
         if (this.alignItems !== alignment) {
-            _.removeCssClass(eGui, `ag-alignment-${this.alignItems}`);
+            _.removeCssClass(eGui, `ag-group-item-alignment-${this.alignItems}`);
         }
 
         this.alignItems = alignment;
-        const newCls = `ag-alignment-${this.alignItems}`;
+        const newCls = `ag-group-item-alignment-${this.alignItems}`;
 
         if (alignment !== 'center' && !_.containsClass(eGui, newCls)) {
             _.addCssClass(eGui, newCls);
@@ -229,7 +242,6 @@ export class AgGroupComponent extends Component {
 
     public hideOpenCloseIcons(hide: boolean): this {
         this.suppressOpenCloseIcons = hide;
-        _.addOrRemoveCssClass(this.getGui(), 'ag-collapsible', !hide);
 
         if (hide) {
             this.toggleGroupExpand(true);

@@ -12,7 +12,7 @@ import {ChartTranslator} from "../../../chartTranslator";
 export class BackgroundPanel extends Component {
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="chartBackgroundGroup">
+            <ag-group-component ref="chartBackgroundGroup" data-group-class="ag-charts-group">
                 <ag-color-picker ref="colorPicker"></ag-color-picker>
             </ag-group-component>
         <div>`;

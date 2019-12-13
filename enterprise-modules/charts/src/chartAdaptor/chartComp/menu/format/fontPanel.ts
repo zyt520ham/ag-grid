@@ -32,11 +32,11 @@ export interface FontPanelParams {
 export class FontPanel extends Component {
 
     public static TEMPLATE =
-        `<div>
-            <ag-group-component ref="fontGroup">
+        `<div class="ag-font-panel">
+            <ag-group-component ref="fontGroup" data-group-class="ag-charts-group">
                 <ag-select ref="familySelect"></ag-select>
                 <ag-select ref="weightStyleSelect"></ag-select>
-                <div class="ag-group-subgroup">
+                <div class="ag-charts-font-size-color">
                     <ag-select ref="sizeSelect"></ag-select>
                     <ag-color-picker ref="colorPicker"></ag-color-picker>
                 </div>

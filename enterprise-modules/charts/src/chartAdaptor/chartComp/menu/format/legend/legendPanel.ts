@@ -19,7 +19,7 @@ export class LegendPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="legendGroup">
+            <ag-group-component ref="legendGroup" data-group-class="ag-charts-group">
                 <ag-select ref="legendPositionSelect"></ag-select>
                 <ag-slider ref="legendPaddingSlider"></ag-slider>
                 <ag-slider ref="markerSizeSlider"></ag-slider>

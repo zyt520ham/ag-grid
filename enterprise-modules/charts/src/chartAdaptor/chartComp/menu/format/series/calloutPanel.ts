@@ -6,7 +6,7 @@ export class CalloutPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="calloutGroup">
+            <ag-group-component ref="calloutGroup" data-group-class="ag-charts-group">
                 <ag-slider ref="calloutLengthSlider"></ag-slider>
                 <ag-slider ref="calloutStrokeWidthSlider"></ag-slider>
                 <ag-slider ref="labelOffsetSlider"></ag-slider>

@@ -102,14 +102,14 @@
         ( margin-left: 2px )
     );
 
-    .ag-group-component {
-        background-color: $ag-group-component-background-color;
+    .ag-group {
+        background-color: $ag-group-background-color;
         padding: 0px;
-        border: 0 solid $ag-group-component-border-color;
+        border: 0 solid $ag-group-border-color;
         border-top-width: 1px;
         &.ag-disabled > {
-            .ag-group-component-title,
-            .ag-group-component-container {
+            .ag-group-title,
+            .ag-group-container {
                 opacity: 0.5;
             }
         }
@@ -118,7 +118,7 @@
                 div {
                     margin-left: 0;
                 }
-                .ag-group-component-title-bar {
+                .ag-group-title-bar {
                     margin-left: 0;
                     padding: $ag-grid-size;
                     .ag-column-group-icons {
@@ -128,26 +128,26 @@
             }
         }
     }
-    .ag-group-component-title-bar {
-        background-color: $ag-group-component-title-background-color;
+    .ag-group-title-bar {
+        background-color: $ag-group-title-background-color;
         height: $ag-icon-size;
         font-size: $ag-font-size;
         font-family: $ag-font-family;
         height: 26px;
     }
-    .ag-group-component-toolbar {
-        background-color: darken($ag-group-component-background-color, 2%);
+    .ag-group-toolbar {
+        background-color: darken($ag-group-background-color, 2%);
         padding: $ag-grid-size;
         border: 0 solid $ag-border-color;
     }
-    .ag-group-component-container {
+    .ag-group-container {
         margin-left: $ag-grid-size * 2;
         padding: $ag-grid-size;
     }
 
     .ag-group-item {
         margin: $ag-grid-size / 2 0;
-        .ag-group-component-title-bar {
+        .ag-group-title-bar {
             height: 18px;
         }
     }

@@ -81,7 +81,8 @@ export class MiniChartsContainer extends Component {
                 title: this.chartTranslator.translate(group),
                 suppressEnabledCheckbox: true,
                 enabled: true,
-                suppressOpenCloseIcons: true
+                suppressOpenCloseIcons: true,
+                groupClass: "ag-charts-group"
             }));
 
             chartGroup.forEach(MiniClass => {

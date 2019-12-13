@@ -24,7 +24,7 @@ export class AxisPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="axisGroup">
+            <ag-group-component ref="axisGroup" data-group-class="ag-charts-group">
                 <ag-color-picker ref="axisColorInput"></ag-color-picker>
                 <ag-slider ref="axisLineWidthSlider"></ag-slider>
                 <ag-select ref="xAxisTypeSelect"></ag-select>

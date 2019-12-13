@@ -99,7 +99,8 @@ export class ChartDataPanel extends Component {
             title: this.getCategoryGroupTitle(),
             enabled: true,
             suppressEnabledCheckbox: true,
-            suppressOpenCloseIcons: false
+            suppressOpenCloseIcons: false,
+            groupClass: "ag-charts-group"
         }));
 
         const inputName = `chartDimension${this.getCompId()}`;
@@ -118,13 +119,14 @@ export class ChartDataPanel extends Component {
 
         this.addComponent(this.getGui(), this.categoriesGroupComp);
     }
-
+    
     private createSeriesGroupComponent(columns: ColState[]): void {
         this.seriesGroupComp = this.wireDependentBean(new AgGroupComponent({
             title: this.getSeriesGroupTitle(),
             enabled: true,
             suppressEnabledCheckbox: true,
-            suppressOpenCloseIcons: false
+            suppressOpenCloseIcons: false,
+            groupClass: "ag-charts-group"
         }));
 
         if (this.chartController.isActiveXYChart()) {

@@ -52,7 +52,7 @@ export class Component extends BeanStub {
         const childNodeList: Node[] = _.copyNodeList(parentNode.childNodes);
 
         childNodeList.forEach((childNode: Node) => {
-            const childComp = this.getContext().createComponentFromElement(childNode as Element, (childComp) => {
+            const childComp = this.getContext().createComponentFromElement(childNode as HTMLElement, (childComp) => {
                 // copy over all attributes, including css classes, so any attributes user put on the tag
                 // wll be carried across
                 this.copyAttributesFromNode(childNode as Element, childComp.getGui());

@@ -24,7 +24,7 @@ export type ToolPanelFilterItem = ToolPanelFilterGroupComp | ToolPanelFilterComp
 export class ToolPanelFilterGroupComp extends Component {
     private static TEMPLATE =
         `<div class="ag-filter-toolpanel-group">
-            <ag-group-component ref="filterGroupComp"></ag-group-component>
+            <ag-group-component ref="filterGroupComp" data-group-class="ag-filter-panel-group"></ag-group-component>
          </div>`;
 
     @RefSelector('filterGroupComp') private filterGroupComp: AgGroupComponent;

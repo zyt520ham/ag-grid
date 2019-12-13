@@ -18,7 +18,7 @@ export class AreaSeriesPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="seriesGroup">
+            <ag-group-component ref="seriesGroup" data-group-class="ag-charts-group">
                 <ag-toggle-button ref="seriesTooltipsToggle"></ag-toggle-button>
                 <ag-slider ref="seriesLineWidthSlider"></ag-slider>
                 <ag-slider ref="seriesLineOpacitySlider"></ag-slider>

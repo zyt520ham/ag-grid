@@ -15,7 +15,7 @@ export class AxisTicksPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="axisTicksGroup">
+            <ag-group-component ref="axisTicksGroup" data-group-class="ag-charts-group">
                 <ag-color-picker ref="axisTicksColorPicker"></ag-color-picker>
                 <ag-slider ref="axisTicksWidthSlider"></ag-slider>
                 <ag-slider ref="axisTicksSizeSlider"></ag-slider>

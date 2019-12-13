@@ -20,7 +20,7 @@ export class ChartPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="chartGroup">
+            <ag-group-component ref="chartGroup" data-group-class="ag-charts-group">
                 <ag-input-text-area ref="titleInput"></ag-input-text-area>
             </ag-group-component>
         <div>`;
