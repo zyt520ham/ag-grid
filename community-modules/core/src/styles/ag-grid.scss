@@ -19,11 +19,6 @@ ag-grid, ag-grid-angular, ag-grid-ng2, ag-grid-polymer, ag-grid-aurelia  {
     visibility: hidden !important;
 }
 
-// TODO this class used to be limited to .ag-group-container and .ag-paging-page-summary-panel, check that it is not overzealous in disabling useful UI
-.ag-disabled {
-    pointer-events: none;
-}
-
 .ag-faded {
     opacity: 0.3;
 }
@@ -1223,6 +1218,9 @@ $ag-handleSize: 5px;
         }
     }
 }
+.ag-disabled .ag-paging-page-summary-panel {
+    pointer-events: none;
+}
 
 /**
  ****************************
@@ -1403,7 +1401,7 @@ $ag-handleSize: 5px;
 
 .ag-group {
     position: relative;
-    flex: 1 1 100%;
+    width: 100%;
 }
 
 .ag-group-title-bar,
@@ -1419,12 +1417,25 @@ $ag-handleSize: 5px;
 
 .ag-group-container {
     display: flex;
+}
+
+.ag-disabled .ag-group-container {
+    pointer-events: none;
+}
+
+.ag-group-container-horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.ag-group-container-vertical {
     flex-direction: column;
 }
 
 .ag-charts-font-size-color {
     display: flex;
     align-self: stretch;
+    justify-content: space-between;
 }
 
 .ag-column-group-icons {
@@ -1433,8 +1444,6 @@ $ag-handleSize: 5px;
 
 .ag-group-item {
     display: flex;
-    flex: 1 1 auto;
-    align-items: center;
 }
 
 .ag-group-item-alignment-stretch .ag-group-item {

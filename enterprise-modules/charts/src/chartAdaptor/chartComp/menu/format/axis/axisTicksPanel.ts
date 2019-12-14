@@ -5,7 +5,8 @@ import {
     Autowired,
     Component,
     PostConstruct,
-    RefSelector
+    RefSelector,
+    AgGroupComponentParams
 } from "@ag-grid-community/core";
 import {ChartController} from "../../../chartController";
 import {ChartTranslator} from "../../../chartTranslator";
@@ -15,7 +16,7 @@ export class AxisTicksPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="axisTicksGroup" data-group-class="ag-charts-group">
+            <ag-group-component ref="axisTicksGroup">
                 <ag-color-picker ref="axisTicksColorPicker"></ag-color-picker>
                 <ag-slider ref="axisTicksWidthSlider"></ag-slider>
                 <ag-slider ref="axisTicksSizeSlider"></ag-slider>
@@ -38,7 +39,12 @@ export class AxisTicksPanel extends Component {
 
     @PostConstruct
     private init() {
-        this.setTemplate(AxisTicksPanel.TEMPLATE);
+        const groupParams: AgGroupComponentParams = {
+            cssIdentifier: 'charts',
+            direction: 'vertical',
+            suppressOpenCloseIcons: true
+        };
+        this.setTemplate(AxisTicksPanel.TEMPLATE, {axisTicksGroup: groupParams});
         this.initAxisTicks();
     }
 

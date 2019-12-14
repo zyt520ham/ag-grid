@@ -4,7 +4,8 @@ import {
     Autowired,
     Component,
     PostConstruct,
-    RefSelector
+    RefSelector,
+    AgGroupComponentParams
 } from "@ag-grid-community/core";
 import {ChartController} from "../../../chartController";
 import {ChartTranslator} from "../../../chartTranslator";
@@ -12,7 +13,7 @@ import {ChartTranslator} from "../../../chartTranslator";
 export class BackgroundPanel extends Component {
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="chartBackgroundGroup" data-group-class="ag-charts-group">
+            <ag-group-component ref="chartBackgroundGroup">
                 <ag-color-picker ref="colorPicker"></ag-color-picker>
             </ag-group-component>
         <div>`;
@@ -31,7 +32,12 @@ export class BackgroundPanel extends Component {
 
     @PostConstruct
     private init() {
-        this.setTemplate(BackgroundPanel.TEMPLATE);
+        const groupParams: AgGroupComponentParams = {
+            cssIdentifier: 'charts',
+            direction: 'vertical',
+            suppressOpenCloseIcons: true
+        };
+        this.setTemplate(BackgroundPanel.TEMPLATE, {chartBackgroundGroup: groupParams});
 
         this.initGroup();
         this.initColorPicker();

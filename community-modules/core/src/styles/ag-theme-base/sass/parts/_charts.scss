@@ -10,10 +10,6 @@
 
 
     .ag-chart-settings-mini-wrapper {
-        // TODO nesting, name
-        .ag-group-container {
-            margin-left: 0;
-        }
         .ag-chart-mini-thumbnail {
             border: 1px solid $ag-secondary-border-color;
             border-radius: 5px;
@@ -70,5 +66,10 @@
                 margin: $ag-grid-size * 1.2 0;
             }
         }
+    }
+
+    .ag-charts-group-container.ag-group-container-horizontal {
+        // TODO this causes mini charts to wrap with large grid sizes. Make it constant, or decrease size of mini charts to fit
+        padding: $ag-grid-size;
     }
 }

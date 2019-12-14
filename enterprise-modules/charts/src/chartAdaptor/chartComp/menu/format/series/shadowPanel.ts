@@ -7,6 +7,7 @@ import {
     DropShadowOptions,
     PostConstruct,
     RefSelector,
+    AgGroupComponentParams,
 } from "@ag-grid-community/core";
 import {ChartTranslator} from "../../../chartTranslator";
 import {ChartController} from "../../../chartController";
@@ -15,7 +16,7 @@ export class ShadowPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="shadowGroup" data-group-class="ag-charts-group">
+            <ag-group-component ref="shadowGroup">
                 <ag-color-picker ref="shadowColorPicker"></ag-color-picker>
                 <ag-slider ref="shadowBlurSlider"></ag-slider>
                 <ag-slider ref="shadowXOffsetSlider"></ag-slider>
@@ -40,7 +41,12 @@ export class ShadowPanel extends Component {
 
     @PostConstruct
     private init() {
-        this.setTemplate(ShadowPanel.TEMPLATE);
+        const groupParams: AgGroupComponentParams = {
+            cssIdentifier: 'charts',
+            direction: 'vertical',
+            suppressOpenCloseIcons: true
+        };
+        this.setTemplate(ShadowPanel.TEMPLATE, {shadowGroup: groupParams});
 
         this.shadowBlurSlider.setTextFieldWidth(45);
         this.shadowXOffsetSlider.setTextFieldWidth(45);

@@ -82,7 +82,8 @@ export class MiniChartsContainer extends Component {
                 suppressEnabledCheckbox: true,
                 enabled: true,
                 suppressOpenCloseIcons: true,
-                groupClass: "ag-charts-group"
+                cssIdentifier: "charts",
+                direction: 'horizontal'
             }));
 
             chartGroup.forEach(MiniClass => {

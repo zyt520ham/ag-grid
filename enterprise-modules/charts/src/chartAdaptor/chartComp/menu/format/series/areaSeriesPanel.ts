@@ -6,7 +6,8 @@ import {
     Autowired,
     Component,
     PostConstruct,
-    RefSelector
+    RefSelector,
+    AgGroupComponentParams
 } from "@ag-grid-community/core";
 import {ChartController} from "../../../chartController";
 import {MarkersPanel} from "./markersPanel";
@@ -18,7 +19,7 @@ export class AreaSeriesPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="seriesGroup" data-group-class="ag-charts-group">
+            <ag-group-component ref="seriesGroup">
                 <ag-toggle-button ref="seriesTooltipsToggle"></ag-toggle-button>
                 <ag-slider ref="seriesLineWidthSlider"></ag-slider>
                 <ag-slider ref="seriesLineOpacitySlider"></ag-slider>
@@ -44,7 +45,11 @@ export class AreaSeriesPanel extends Component {
 
     @PostConstruct
     private init() {
-        this.setTemplate(AreaSeriesPanel.TEMPLATE);
+        const groupParams: AgGroupComponentParams = {
+            cssIdentifier: 'charts',
+            direction: 'vertical'
+        };
+        this.setTemplate(AreaSeriesPanel.TEMPLATE, {seriesGroup: groupParams});
 
         this.initSeriesGroup();
         this.initSeriesTooltips();

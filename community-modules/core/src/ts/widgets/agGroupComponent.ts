@@ -7,14 +7,21 @@ import { _ } from "../utils";
 
 type GroupItem = Component | HTMLElement;
 
-interface GroupParams {
-    title: string;
-    enabled: boolean;
+type Align = 'start' | 'end' | 'center' | 'stretch';
+const defaultItemAlign: Align = 'center';
+
+type Direction = 'horizontal' | 'vertical';
+const defaultDirection = 'vertical';
+
+export interface AgGroupComponentParams {
+    title?: string;
+    enabled?: boolean;
     suppressEnabledCheckbox?: boolean;
     suppressOpenCloseIcons?: boolean;
-    cssClass?: string;
+    cssIdentifier?: string;
     items?: GroupItem[];
-    alignItems?: 'start' | 'end' | 'center' | 'stretch'; // center by default
+    alignItems?: Align;
+    direction?: Direction;
 }
 
 export class AgGroupComponent extends Component {
@@ -25,7 +32,7 @@ export class AgGroupComponent extends Component {
     private expanded: boolean;
     private suppressEnabledCheckbox: boolean = true;
     private suppressOpenCloseIcons: boolean = false;
-    private alignItems: GroupParams['alignItems'];
+    private alignItems: Align;
 
     @Autowired('gridOptionsWrapper') private gridOptionsWrapper: GridOptionsWrapper;
 
@@ -38,12 +45,8 @@ export class AgGroupComponent extends Component {
     @RefSelector("lbGroupTitle") private lbGroupTitle: HTMLElement;
     @RefSelector("eContainer") private groupContainer: HTMLElement;
 
-    constructor(params?: GroupParams) {
+    constructor(params: AgGroupComponentParams = {}) {
         super(AgGroupComponent.getTemplate(params));
-
-        if (!params) {
-            params = {} as GroupParams;
-        }
 
         const { title, enabled, items, suppressEnabledCheckbox, suppressOpenCloseIcons } = params;
 
@@ -62,30 +65,20 @@ export class AgGroupComponent extends Component {
         }
     }
 
-    private static getTemplate(params?: GroupParams) {
-        const groupClass = params && params.cssClass;
-        if (!groupClass) {
-            throw new Error('Missing groupClass param');
-        }
-        return `<div class="ag-group ${groupClass}">
-            <div class="ag-group-title-bar ${groupClass}-title-bar" ref="groupTitle">
-                <span class="ag-group-title-bar-icon ${groupClass}-title-bar-icon" ref="eGroupOpenedIcon"></span>
-                <span class="ag-group-title-bar-icon ${groupClass}-title-bar-icon" ref="eGroupClosedIcon"></span>
-                <span ref="lbGroupTitle" class="ag-group-title ${groupClass}-title"></span>
+    private static getTemplate(params: AgGroupComponentParams) {
+        const cssIdentifier = (params && params.cssIdentifier) || 'default';
+        const direction: Direction = params.direction || 'vertical';
+        return `<div class="ag-group ag-${cssIdentifier}-group">
+            <div class="ag-group-title-bar ag-${cssIdentifier}-group-title-bar" ref="groupTitle">
+                <span class="ag-group-title-bar-icon ag-${cssIdentifier}-group-title-bar-icon" ref="eGroupOpenedIcon"></span>
+                <span class="ag-group-title-bar-icon ag-${cssIdentifier}-group-title-bar-icon" ref="eGroupClosedIcon"></span>
+                <span ref="lbGroupTitle" class="ag-group-title ag-${cssIdentifier}-group-title"></span>
             </div>
-            <div ref="eToolbar" class="ag-group-toolbar ${groupClass}-toolbar">
+            <div ref="eToolbar" class="ag-group-toolbar ag-${cssIdentifier}-group-toolbar">
                 <ag-checkbox ref="cbGroupEnabled"></ag-checkbox>
             </div>
-            <div ref="eContainer" class="ag-group-container ${groupClass}-container"></div>
+            <div ref="eContainer" class="ag-group-container ag-group-container-${direction} ag-${cssIdentifier}-group-container"></div>
         </div>`;
-    }
-
-    public static getParamsFromElement(el: HTMLElement): GroupParams {
-        const groupClass = el.getAttribute("data-group-class");
-        if (!groupClass) {
-            throw new Error('<ag-group-component> elements must define the data-group-class attribute');
-        }
-        return { cssClass: groupClass };
     }
 
     @PostConstruct
@@ -114,28 +107,27 @@ export class AgGroupComponent extends Component {
         this.hideOpenCloseIcons(this.suppressOpenCloseIcons);
 
         this.setupExpandContract();
+        this.refreshChildDisplay();
     }
 
     private setupExpandContract(): void {
         this.eGroupClosedIcon.appendChild(_.createIcon('columnSelectClosed', this.gridOptionsWrapper, null));
         this.eGroupOpenedIcon.appendChild(_.createIcon('columnSelectOpen', this.gridOptionsWrapper, null));
-
-        this.setOpenClosedIcons();
-
         this.addDestroyableEventListener(this.groupTitle, 'click', () => this.toggleGroupExpand());
     }
 
-    private setOpenClosedIcons(): void {
+    private refreshChildDisplay(): void {
         const showIcon = !this.suppressOpenCloseIcons;
         _.setDisplayed(this.eGroupClosedIcon, showIcon && !this.expanded);
         _.setDisplayed(this.eGroupOpenedIcon, showIcon && this.expanded);
+        _.setDisplayed(this.eToolbar, this.expanded && !this.suppressEnabledCheckbox);
     }
 
     public isExpanded(): boolean {
         return this.expanded;
     }
 
-    public setAlignItems(alignment: GroupParams['alignItems']): this {
+    public setAlignItems(alignment: AgGroupComponentParams['alignItems']): this {
         const eGui = this.getGui();
 
         if (this.alignItems !== alignment) {
@@ -145,19 +137,15 @@ export class AgGroupComponent extends Component {
         this.alignItems = alignment;
         const newCls = `ag-group-item-alignment-${this.alignItems}`;
 
-        if (alignment !== 'center' && !_.containsClass(eGui, newCls)) {
-            _.addCssClass(eGui, newCls);
-        }
+        _.addCssClass(eGui, newCls);
 
         return this;
     }
 
     public toggleGroupExpand(expanded?: boolean): this {
-        const eGui = this.getGui();
-
         if (this.suppressOpenCloseIcons) {
             this.expanded = true;
-            _.removeCssClass(eGui, 'ag-collapsed');
+            _.setDisplayed(this.groupContainer, true);
             return this;
         }
 
@@ -168,8 +156,8 @@ export class AgGroupComponent extends Component {
         }
 
         this.expanded = expanded;
-        this.setOpenClosedIcons();
-        _.addOrRemoveCssClass(eGui, 'ag-collapsed', !expanded);
+        this.refreshChildDisplay();
+        _.setDisplayed(this.groupContainer, expanded);
 
         if (this.expanded) {
             const event = {
@@ -236,7 +224,8 @@ export class AgGroupComponent extends Component {
     }
 
     public hideEnabledCheckbox(hide: boolean): this {
-        _.addOrRemoveCssClass(this.eToolbar, 'ag-hidden', hide);
+        this.suppressEnabledCheckbox = hide;
+        this.refreshChildDisplay();
         return this;
     }
 

@@ -82,16 +82,16 @@ export class Context {
         this.componentsMappedByName[classUpperCase] = componentMeta.componentClass;
     }
 
-    public createComponentFromElement(element: HTMLElement, afterPreCreateCallback?: (comp: Component) => void): Component {
+    public createComponentFromElement(element: HTMLElement, afterPreCreateCallback?: (comp: Component) => void, paramsMap?: any): Component {
         const key = element.nodeName;
-        return this.createComponent(key, afterPreCreateCallback, element);
+        const componentParams = paramsMap ? paramsMap[element.getAttribute('ref')] : undefined;
+        return this.createComponent(key, afterPreCreateCallback, element, componentParams);
     }
 
-    public createComponent(key: string, afterPreCreateCallback?: (comp: Component) => void, element?: HTMLElement): Component {
+    public createComponent(key: string, afterPreCreateCallback?: (comp: Component) => void, element?: HTMLElement, componentParams?: any): Component {
         if (this.componentsMappedByName && this.componentsMappedByName[key]) {
             const cls = this.componentsMappedByName[key];
-            const params = element && cls.getParamsFromElement ? cls.getParamsFromElement(element) : undefined;
-            const newComponent = new this.componentsMappedByName[key](params) as Component;
+            const newComponent = new this.componentsMappedByName[key](componentParams) as Component;
             this.wireBean(newComponent, afterPreCreateCallback);
             return newComponent;
         }

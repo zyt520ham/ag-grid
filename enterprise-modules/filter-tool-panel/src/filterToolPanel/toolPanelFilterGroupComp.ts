@@ -7,15 +7,14 @@ import {
     Component,
     Events,
     EventService,
-    FilterManager,
     FilterOpenedEvent,
     GridApi,
-    GridOptionsWrapper,
     OriginalColumnGroup,
     OriginalColumnGroupChild,
     PostConstruct,
     PreConstruct,
-    RefSelector
+    RefSelector,
+    AgGroupComponentParams
 } from "@ag-grid-community/core";
 import {ToolPanelFilterComp} from "./toolPanelFilterComp";
 
@@ -24,15 +23,13 @@ export type ToolPanelFilterItem = ToolPanelFilterGroupComp | ToolPanelFilterComp
 export class ToolPanelFilterGroupComp extends Component {
     private static TEMPLATE =
         `<div class="ag-filter-toolpanel-group">
-            <ag-group-component ref="filterGroupComp" data-group-class="ag-filter-panel-group"></ag-group-component>
+            <ag-group-component ref="filterGroupComp"></ag-group-component>
          </div>`;
 
     @RefSelector('filterGroupComp') private filterGroupComp: AgGroupComponent;
 
     @Autowired('gridApi') private gridApi: GridApi;
-    @Autowired('filterManager') private filterManager: FilterManager;
     @Autowired('eventService') private eventService: EventService;
-    @Autowired('gridOptionsWrapper') private gridOptionsWrapper: GridOptionsWrapper;
     @Autowired('columnController') private columnController: ColumnController;
 
     private readonly depth: number;
@@ -52,7 +49,11 @@ export class ToolPanelFilterGroupComp extends Component {
 
     @PreConstruct
     private preConstruct(): void {
-        this.setTemplate(ToolPanelFilterGroupComp.TEMPLATE);
+        const groupParams: AgGroupComponentParams = {
+            cssIdentifier: 'filter-panel',
+            direction: 'vertical'
+        };
+        this.setTemplate(ToolPanelFilterGroupComp.TEMPLATE, {filterGroupComp: groupParams});
     }
 
     @PostConstruct

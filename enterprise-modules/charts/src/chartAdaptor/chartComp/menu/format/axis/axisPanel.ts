@@ -12,6 +12,7 @@ import {
     FontWeight,
     PostConstruct,
     RefSelector,
+    AgGroupComponentParams,
 } from "@ag-grid-community/core";
 import {ChartController} from "../../../chartController";
 import {AxisTicksPanel} from "./axisTicksPanel";
@@ -24,7 +25,7 @@ export class AxisPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="axisGroup" data-group-class="ag-charts-group">
+            <ag-group-component ref="axisGroup">
                 <ag-color-picker ref="axisColorInput"></ag-color-picker>
                 <ag-slider ref="axisLineWidthSlider"></ag-slider>
                 <ag-select ref="xAxisTypeSelect"></ag-select>
@@ -48,7 +49,11 @@ export class AxisPanel extends Component {
 
     @PostConstruct
     private init() {
-        this.setTemplate(AxisPanel.TEMPLATE);
+        const groupParams: AgGroupComponentParams = {
+            cssIdentifier: 'charts',
+            direction: 'vertical'
+        };
+        this.setTemplate(AxisPanel.TEMPLATE, {axisGroup: groupParams});
 
         this.initAxis();
         this.initAxisTicks();

@@ -101,22 +101,18 @@
                 }
             }
         }
+    }
 
-        .ag-group-item {
-            margin-top: $ag-grid-size;
-            margin-bottom: $ag-grid-size;
-        }
+    .ag-filter-panel-group-title-bar {
+        @include ag-grid-border(top, $color: $ag-secondary-border-color)
+    }
 
-        .ag-group-item:not(.ag-filter-toolpanel-instance),
-        .ag-group-item > .ag-group {
-            border-top: none;
-            margin-bottom: 0;
-            .ag-group-title-bar {
-                min-height: unset;
-                height: unset;
-                margin: $ag-grid-size 0;
-            }
-        }
+    @include ag-auto-rtl(".ag-filter-panel-group-title", (
+        margin-left: $ag-grid-size
+    ));
+
+    .ag-filter-toolpanel-instance {
+        margin: $ag-grid-size 0;
     }
 
     @include ag-auto-rtl(

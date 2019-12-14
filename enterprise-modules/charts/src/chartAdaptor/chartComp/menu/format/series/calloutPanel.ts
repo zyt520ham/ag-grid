@@ -1,4 +1,4 @@
-import {AgGroupComponent, AgSlider, Autowired, Component, PostConstruct, RefSelector} from "@ag-grid-community/core";
+import {AgGroupComponent, AgSlider, Autowired, Component, PostConstruct, RefSelector, AgGroupComponentParams} from "@ag-grid-community/core";
 import {ChartTranslator} from "../../../chartTranslator";
 import {ChartController} from "../../../chartController";
 
@@ -6,7 +6,7 @@ export class CalloutPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="calloutGroup" data-group-class="ag-charts-group">
+            <ag-group-component ref="calloutGroup">
                 <ag-slider ref="calloutLengthSlider"></ag-slider>
                 <ag-slider ref="calloutStrokeWidthSlider"></ag-slider>
                 <ag-slider ref="labelOffsetSlider"></ag-slider>
@@ -29,7 +29,11 @@ export class CalloutPanel extends Component {
 
     @PostConstruct
     private init() {
-        this.setTemplate(CalloutPanel.TEMPLATE);
+        const groupParams: AgGroupComponentParams = {
+            cssIdentifier: 'charts',
+            direction: 'vertical'
+        };
+        this.setTemplate(CalloutPanel.TEMPLATE, {calloutGroup: groupParams});
         this.initCalloutOptions();
     }
 

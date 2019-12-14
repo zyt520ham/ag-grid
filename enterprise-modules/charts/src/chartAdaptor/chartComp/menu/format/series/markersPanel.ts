@@ -5,7 +5,8 @@ import {
     ChartType,
     Component,
     PostConstruct,
-    RefSelector
+    RefSelector,
+    AgGroupComponentParams
 } from "@ag-grid-community/core";
 import {ChartTranslator} from "../../../chartTranslator";
 import {ScatterChartProxy} from "../../../chartProxies/cartesian/scatterChartProxy";
@@ -15,7 +16,7 @@ export class MarkersPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="seriesMarkersGroup" data-group-class="ag-charts-group">
+            <ag-group-component ref="seriesMarkersGroup">
                 <ag-slider ref="seriesMarkerMinSizeSlider"></ag-slider>
                 <ag-slider ref="seriesMarkerSizeSlider"></ag-slider>
                 <ag-slider ref="seriesMarkerStrokeWidthSlider"></ag-slider>
@@ -38,7 +39,11 @@ export class MarkersPanel extends Component {
 
     @PostConstruct
     private init() {
-        this.setTemplate(MarkersPanel.TEMPLATE);
+        const groupParams: AgGroupComponentParams = {
+            cssIdentifier: 'charts',
+            direction: 'vertical'
+        };
+        this.setTemplate(MarkersPanel.TEMPLATE, {seriesMarkersGroup: groupParams});
         this.initMarkers();
     }
 

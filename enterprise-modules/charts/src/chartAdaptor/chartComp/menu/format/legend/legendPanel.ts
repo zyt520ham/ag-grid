@@ -10,6 +10,7 @@ import {
     LegendPosition,
     PostConstruct,
     RefSelector,
+    AgGroupComponentParams,
 } from "@ag-grid-community/core";
 import {ChartController} from "../../../chartController";
 import {Font, FontPanel, FontPanelParams} from "../fontPanel";
@@ -19,7 +20,7 @@ export class LegendPanel extends Component {
 
     public static TEMPLATE =
         `<div>
-            <ag-group-component ref="legendGroup" data-group-class="ag-charts-group">
+            <ag-group-component ref="legendGroup">
                 <ag-select ref="legendPositionSelect"></ag-select>
                 <ag-slider ref="legendPaddingSlider"></ag-slider>
                 <ag-slider ref="markerSizeSlider"></ag-slider>
@@ -51,7 +52,11 @@ export class LegendPanel extends Component {
 
     @PostConstruct
     private init() {
-        this.setTemplate(LegendPanel.TEMPLATE);
+        const groupParams: AgGroupComponentParams = {
+            cssIdentifier: 'charts',
+            direction: 'vertical'
+        };
+        this.setTemplate(LegendPanel.TEMPLATE, {legendGroup: groupParams});
 
         this.initLegendGroup();
         this.initLegendPosition();

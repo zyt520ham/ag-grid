@@ -47,11 +47,6 @@
     }
 }
 
-Next up:
-
-Remove getParamsFromElement and construct the component properly
-Pass in horizontal / vertical property to AgGroupComponent
-
 .ag-chart-tabbed-menu {
     width: 100%;
     height: 100%;
@@ -146,14 +141,6 @@ Pass in horizontal / vertical property to AgGroupComponent
                     display: block;
                 }
             }
-        }
-    }
-
-    .ag-charts-group-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        .ag-chart-mini-thumbnail {
-            flex: none;
         }
     }
 
