@@ -2,85 +2,76 @@
 
 
 
-xdescribe('AG Grid', () => {
-    beforeEach(() => {
-        //cy.visit('https://build.ag-grid.com/examples/grouping-unbalanced-groups/unbalanced-groups/packages/angular/index.html')
-    })
-
-    it('displays two todo items by default', () => {
-        //.waitUntil(() => Cypress.$('iframe').contents().find('.ag-root').length, { timeout: 10_000 })
-
-        //getIframeBody().find('.ag-theme-alpine', { timeout: 10_000 }).should('exist')
-        //getIframeBody().find('#top-row-count').should('have.value', '1')
-        //expect(stt).to.be.called;
-
-    })
-})
-
-
-
 describe('AG Grid Examples', () => {
     const pages = Cypress.env('examples')
-    console.log(pages)
+    const updateSnapshots = Cypress.env('updateSnapshots');
 
     it('has valid pages', () => {
-        console.log('enve', Cypress.env());
         expect(pages).to.be.an('array').and.not.be.empty
     })
 
-    Cypress._.forEach(pages.filter(e => e.page.includes('row-spanning')), (p) => {
-        describe(p.page, () => {
-            Cypress._.forEach(p.examples, (ex) => {
-                describe(ex.example, () => {
 
-                    /*                     beforeEach(() => {
-                    
-                                            cy.visit(`https://ag-grid.com/examples/${p.page}/${ex.example}/packages/vanilla/index.html`)
-                                            cy.get('.ag-row', { timeout: 10_000 }).wait(1_000)
-                                            cy.get('.ag-root-wrapper').getAgGridData().as('expectedData');
-                    
-                                        }) */
+    if (updateSnapshots) {
 
-                    Cypress._.forEach(ex.generated, (g) => {
-                        describe(g.type, () => {
-                            Cypress._.forEach(g.frameworks.filter(f => f == 'angular'), (f) => {
+        it('generate snapshots', () => {
+            expect(true).to.true;
+        })
 
-                                const agGridSelector = '.ag-root-wrapper';
+        Cypress._.forEach(pages.filter(e => e.page.includes('row-spanning') || e.page.includes('grid-size')).slice(0, 1), (p) => {
+            describe(p.page, () => {
+                Cypress._.forEach(p.examples, (ex) => {
+                    describe(ex.example, () => {
 
-                                //  if (f.includes('vue') || f.includes('java')) {
-                                it(f, () => {
-                                    //      cy.get('@expectedData').then(exp => {
+                        Cypress._.forEach(ex.generated, (g) => {
+                            describe(g.type, () => {
+                                Cypress._.forEach(g.frameworks.filter(f => f !== 'typescript').slice(0, 1), (f) => {
 
-
-                                    cy.visit(`https://build.ag-grid.com/examples/${p.page}/${ex.example}/${g.type}/${f}/index.html`)
-                                    cy.get('.ag-row', { timeout: 10_000 }).wait(1_000)
-                                    cy.get(agGridSelector, { timeout: 10_000 }).getAgGridData()
-                                        .then((actualTableData) => {
-                                            cy.matchImageSnapshot(`${p.page}/${ex.example}/${g.type}/${f}`);
-                                            //   cy.get(agGridSelector).agGridValidateRowsExactOrder(actualTableData, exp);
-                                        })
-                                    //    }
-                                    //         })
+                                    it(f, () => {
+                                        cy.visit(`https://ag-grid.com/examples/${p.page}/${ex.example}/${g.type}/${f}/index.html`)
+                                        cy.get('.ag-row', { timeout: 10_000 })
+                                            .then(() => {
+                                                cy.matchImageSnapshot(`${p.page}/${ex.example}/${g.type}/${f}`);
+                                            })
+                                    })
                                 })
-                            })
-                        });
+                            });
+                        })
                     })
                 })
             })
         })
+    } else {
 
-        /* xbeforeEach(() => {
-            cy.visit('https://build.ag-grid.com/examples/')
-        }) */
+        it('compare snapshots', () => {
+            expect(true).to.true;
+        })
 
-        // xit('getExamples', () => {
+        Cypress._.forEach(pages.filter(e => e.page.includes('row-spanning') || e.page.includes('grid-size')), (p) => {
+            describe(p.page, () => {
+                Cypress._.forEach(p.examples, (ex) => {
+                    describe(ex.example, () => {
 
-        //.waitUntil(() => Cypress.$('iframe').contents().find('.ag-root').length, { timeout: 10_000 })
+                        Cypress._.forEach(ex.generated, (g) => {
+                            describe(g.type, () => {
+                                Cypress._.forEach(g.frameworks, (f) => {
 
-        //getIframeBody().find('.ag-theme-alpine', { timeout: 10_000 }).should('exist')
-        //getIframeBody().find('#top-row-count').should('have.value', '1')
-        //expect(stt).to.be.called;
+                                    it(f, () => {
 
-        // })
-    })
+
+                                        cy.visit(`https://build.ag-grid.com/examples/${p.page}/${ex.example}/${g.type}/${f}/index.html`)
+                                        // Compare typescript with javascript as that not on live
+                                        const compFramework = f === 'typescript' ? 'javascript' : f;
+                                        cy.get('.ag-row', { timeout: 10_000 })
+                                            .then(() => {
+                                                cy.matchImageSnapshot(`${p.page}/${ex.example}/${g.type}/${compFramework}`);
+                                            })
+                                    })
+                                })
+                            });
+                        })
+                    })
+                })
+            })
+        })
+    }
 })
