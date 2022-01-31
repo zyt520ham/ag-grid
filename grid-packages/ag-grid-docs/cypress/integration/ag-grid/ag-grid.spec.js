@@ -3,7 +3,7 @@
 
 
 describe('AG Grid Examples', () => {
-    const pages = Cypress.env('examples')
+    const pages = Cypress.env('examples').filter(e => e.page.includes('cell-rendering')).slice(0, 1)
     const updateSnapshots = Cypress.env('updateSnapshots');
 
     it('has valid pages', () => {
@@ -17,14 +17,14 @@ describe('AG Grid Examples', () => {
             expect(true).to.true;
         })
 
-        Cypress._.forEach(pages.filter(e => e.page.includes('row-spanning') || e.page.includes('grid-size')).slice(0, 1), (p) => {
+        Cypress._.forEach(pages, (p) => {
             describe(p.page, () => {
                 Cypress._.forEach(p.examples, (ex) => {
                     describe(ex.example, () => {
 
                         Cypress._.forEach(ex.generated, (g) => {
                             describe(g.type, () => {
-                                Cypress._.forEach(g.frameworks.filter(f => f !== 'typescript').slice(0, 1), (f) => {
+                                Cypress._.forEach(g.frameworks.filter(f => f !== 'typescript'), (f) => {
 
                                     it(f, () => {
                                         cy.visit(`https://ag-grid.com/examples/${p.page}/${ex.example}/${g.type}/${f}/index.html`)
@@ -46,7 +46,7 @@ describe('AG Grid Examples', () => {
             expect(true).to.true;
         })
 
-        Cypress._.forEach(pages.filter(e => e.page.includes('row-spanning') || e.page.includes('grid-size')), (p) => {
+        Cypress._.forEach(pages, (p) => {
             describe(p.page, () => {
                 Cypress._.forEach(p.examples, (ex) => {
                     describe(ex.example, () => {
@@ -65,7 +65,7 @@ describe('AG Grid Examples', () => {
                                             .then(() => {
                                                 cy.matchImageSnapshot(`${p.page}/${ex.example}/${g.type}/${compFramework}`);
                                                 // Test framework against plain javascript to catch those diffs too.
-                                                cy.matchImageSnapshot(`${p.page}/${ex.example}/${g.type}/javascript}`);
+                                                cy.matchImageSnapshot(`${p.page}/${ex.example}/${g.type}/javascript`);
                                             })
                                     })
                                 })
