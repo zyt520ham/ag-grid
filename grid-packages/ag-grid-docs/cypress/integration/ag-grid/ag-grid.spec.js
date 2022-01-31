@@ -64,6 +64,8 @@ describe('AG Grid Examples', () => {
                                         cy.get('.ag-row', { timeout: 10_000 })
                                             .then(() => {
                                                 cy.matchImageSnapshot(`${p.page}/${ex.example}/${g.type}/${compFramework}`);
+                                                // Test framework against plain javascript to catch those diffs too.
+                                                cy.matchImageSnapshot(`${p.page}/${ex.example}/${g.type}/javascript}`);
                                             })
                                     })
                                 })
