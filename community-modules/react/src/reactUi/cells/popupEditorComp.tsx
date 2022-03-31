@@ -51,7 +51,7 @@ const PopupEditorComp = (props: {
             modal: useModelPopup,
             eChild: ePopupGui,
             closeOnEsc: true,
-            closedCallback: () => { cellCtrl.onPopupEditorClosed(); },
+            closedCallback: (e) => { cellCtrl.onPopupEditorClosed(e); },
             anchorToElement: eParentCell,
             positionCallback,
             ariaLabel: translate('ariaLabelCellEditor', 'Cell Editor')

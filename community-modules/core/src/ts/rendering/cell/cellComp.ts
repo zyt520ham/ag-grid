@@ -537,7 +537,7 @@ export class CellComp extends Component implements TooltipParentComp {
             modal: useModelPopup,
             eChild: ePopupGui,
             closeOnEsc: true,
-            closedCallback: () => { this.cellCtrl.onPopupEditorClosed(); },
+            closedCallback: (e) => { this.cellCtrl.onPopupEditorClosed(e); },
             anchorToElement: this.getGui(),
             positionCallback,
             ariaLabel: translate('ariaLabelCellEditor', 'Cell Editor')

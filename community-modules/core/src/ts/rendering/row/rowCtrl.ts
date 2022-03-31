@@ -524,8 +524,8 @@ export class RowCtrl extends BeanStub {
         return this.editingRow;
     }
 
-    public stopRowEditing(cancel: boolean): void {
-        this.stopEditing(cancel);
+    public stopRowEditing(cancel: boolean, event: Event | null): void {
+        this.stopEditing(cancel, event);
     }
 
     public isFullWidth(): boolean {
@@ -779,7 +779,7 @@ export class RowCtrl extends BeanStub {
         }
     }
 
-    public createRowEvent(type: string, domEvent?: Event): RowEvent {
+    public createRowEvent(type: string, domEvent?: Event | null): RowEvent {
         return {
             type: type,
             node: this.rowNode,
@@ -997,8 +997,8 @@ export class RowCtrl extends BeanStub {
         }
     }
 
-    public stopEditing(cancel = false): void {
-        const cellEdits = this.getAllCellCtrls().map(cellCtrl => cellCtrl.stopEditing(cancel));
+    public stopEditing(cancel: boolean, event: Event | null): void {
+        const cellEdits = this.getAllCellCtrls().map(cellCtrl => cellCtrl.stopEditing(cancel, event));
 
         if (!this.editingRow) { return; }
 
@@ -1006,7 +1006,7 @@ export class RowCtrl extends BeanStub {
             const event: RowValueChangedEvent = this.createRowEvent(Events.EVENT_ROW_VALUE_CHANGED);
             this.beans.eventService.dispatchEvent(event);
         }
-        this.setEditingRow(false);
+        this.setEditingRow(false, event);
     }
 
     public setInlineEditingCss(editing: boolean): void {
@@ -1016,13 +1016,13 @@ export class RowCtrl extends BeanStub {
         });
     }
 
-    private setEditingRow(value: boolean): void {
+    private setEditingRow(value: boolean, domEvent: Event | null): void {
         this.editingRow = value;
         this.allRowGuis.forEach(gui => gui.rowComp.addOrRemoveCssClass('ag-row-editing', value));
 
         const event: RowEvent = value ?
-            this.createRowEvent(Events.EVENT_ROW_EDITING_STARTED) as RowEditingStartedEvent
-            : this.createRowEvent(Events.EVENT_ROW_EDITING_STOPPED) as RowEditingStoppedEvent;
+            this.createRowEvent(Events.EVENT_ROW_EDITING_STARTED, domEvent) as RowEditingStartedEvent
+            : this.createRowEvent(Events.EVENT_ROW_EDITING_STOPPED, domEvent) as RowEditingStoppedEvent;
 
         this.beans.eventService.dispatchEvent(event);
     }
@@ -1039,7 +1039,7 @@ export class RowCtrl extends BeanStub {
                 cellCtrl.startEditing(null, null, cellStartedEdit, event);
             }
         });
-        this.setEditingRow(true);
+        this.setEditingRow(true, event);
     }
 
     public getAllCellCtrls(): CellCtrl[] {
@@ -1319,7 +1319,7 @@ export class RowCtrl extends BeanStub {
 
         // if we are editing, then moving the focus out of a row will stop editing
         if (!rowFocused && this.editingRow) {
-            this.stopEditing(false);
+            this.stopEditing(false, null);
         }
     }
 

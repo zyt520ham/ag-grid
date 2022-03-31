@@ -92,7 +92,7 @@ export class CellKeyboardListenerFeature extends BeanStub {
 
     private onEnterKeyDown(e: KeyboardEvent): void {
         if (this.cellCtrl.isEditing() || this.rowCtrl.isEditing()) {
-            this.cellCtrl.stopEditingAndFocus();
+            this.cellCtrl.stopEditingAndFocus(false, e);
         } else {
             if (this.beans.gridOptionsWrapper.isEnterMovesDown()) {
                 this.beans.navigationService.navigateToNextCell(null, KeyCode.DOWN, this.cellCtrl.getCellPosition(), false);
@@ -117,7 +117,7 @@ export class CellKeyboardListenerFeature extends BeanStub {
 
     private onEscapeKeyDown(event: KeyboardEvent): void {
         if (this.cellCtrl.isEditing()) {
-            this.cellCtrl.stopRowOrCellEdit(true);
+            this.cellCtrl.stopRowOrCellEdit(true, event);
             this.cellCtrl.focusCell(true);
         }
     }

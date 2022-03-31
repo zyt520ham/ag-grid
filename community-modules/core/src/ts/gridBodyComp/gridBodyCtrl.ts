@@ -80,7 +80,7 @@ export class GridBodyCtrl extends BeanStub {
     }
 
     public setComp(comp: IGridBodyComp, eGridBody: HTMLElement, eBodyViewport: HTMLElement,
-                   eTop: HTMLElement, eBottom: HTMLElement): void {
+        eTop: HTMLElement, eBottom: HTMLElement): void {
         this.comp = comp;
         this.eGridBody = eGridBody;
         this.eBodyViewport = eBodyViewport;
@@ -173,7 +173,7 @@ export class GridBodyCtrl extends BeanStub {
             const elementWithFocus = event.relatedTarget as HTMLElement;
 
             if (getTabIndex(elementWithFocus) === null) {
-                this.rowRenderer.stopEditing();
+                this.rowRenderer.stopEditing(false, event);
                 return;
             }
 
@@ -192,7 +192,7 @@ export class GridBodyCtrl extends BeanStub {
             }
 
             if (!clickInsideGrid) {
-                this.rowRenderer.stopEditing();
+                this.rowRenderer.stopEditing(false, event);
             }
         };
 

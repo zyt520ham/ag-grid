@@ -10,8 +10,8 @@ import {
     CellFocusedEvent,
     Events,
     FlashCellsEvent,
-    CellValueChangedEvent,
-    CellEditRequestEvent
+    CellEditRequestEvent,
+    CellEditingStoppedEvent,
 } from "../../events";
 import { GridOptionsWrapper } from "../../gridOptionsWrapper";
 import { CellRangeFeature } from "./cellRangeFeature";
@@ -395,20 +395,20 @@ export class CellCtrl extends BeanStub {
     }
 
     // pass in 'true' to cancel the editing.
-    public stopRowOrCellEdit(cancel: boolean = false) {
+    public stopRowOrCellEdit(cancel: boolean, event: Event | null) {
         if (this.beans.gridOptionsWrapper.isFullRowEdit()) {
-            this.rowCtrl.stopRowEditing(cancel);
+            this.rowCtrl.stopRowEditing(cancel, event);
         } else {
-            this.stopEditing(cancel);
+            this.stopEditing(cancel, event);
         }
     }
 
-    public onPopupEditorClosed(): void {
+    public onPopupEditorClosed(event: Event | undefined): void {
         if (!this.isEditing()) { return; }
         // note: this happens because of a click outside of the grid or if the popupEditor
         // is closed with `Escape` key. if another cell was clicked, then the editing will
         // have already stopped and returned on the conditional above.
-        this.stopEditingAndFocus();
+        this.stopEditingAndFocus(false, event || null);
     }
 
     private takeValueFromCellEditor(cancel: boolean): { newValue?: any, newValueExists: boolean } {
@@ -479,9 +479,10 @@ export class CellCtrl extends BeanStub {
     /**
      * Ends the Cell Editing
      * @param cancel `True` if the edit process is being canceled.
+     * @param event Event that caused stop in editing if it is known.
      * @returns `True` if the value of the `GridCell` has been updated, otherwise `False`.
      */
-    public stopEditing(cancel = false): boolean {
+    public stopEditing(cancel: boolean = false, event: Event | null = null): boolean {
         if (!this.editing) { return false; }
 
         const { newValue, newValueExists } = this.takeValueFromCellEditor(cancel);
@@ -496,14 +497,14 @@ export class CellCtrl extends BeanStub {
         this.cellComp.setEditDetails(); // passing nothing stops editing
         this.updateAndFormatValue();
         this.refreshCell({ forceRefresh: true, suppressFlash: true });
-        this.dispatchEditingStoppedEvent(oldValue, newValue);
+        this.dispatchEditingStoppedEvent(oldValue, newValue, event);
 
         return valueChanged;
     }
 
-    private dispatchEditingStoppedEvent(oldValue: any, newValue: any): void {
-        const editingStoppedEvent = {
-            ...this.createEvent(null, Events.EVENT_CELL_EDITING_STOPPED),
+    private dispatchEditingStoppedEvent(oldValue: any, newValue: any, event: Event | null): void {
+        const editingStoppedEvent: CellEditingStoppedEvent = {
+            ...this.createEvent(event, Events.EVENT_CELL_EDITING_STOPPED),
             oldValue,
             newValue
         };
@@ -542,7 +543,7 @@ export class CellCtrl extends BeanStub {
     }
 
     private createCellEditorParams(key: string | null, charPress: string | null, cellStartedEdit: boolean): ICellEditorParams {
-        const res: any = {
+        const res: ICellEditorParams = {
             value: this.getValueFromValueService(),
             key: key,
             eventKey: key,
@@ -561,11 +562,11 @@ export class CellCtrl extends BeanStub {
             eGridCell: this.getGui(),
             parseValue: this.parseValue.bind(this),
             formatValue: this.formatValue.bind(this)
-        };
+        } as ICellEditorParams;
         if (this.scope) {
             res.$scope = this.scope;
         }
-        return res as ICellEditorParams;
+        return res;
     }
 
     private createCellRendererParams(): ICellRendererParams {
@@ -730,8 +731,8 @@ export class CellCtrl extends BeanStub {
 
     // cell editors call this, when they want to stop for reasons other
     // than what we pick up on. eg selecting from a dropdown ends editing.
-    public stopEditingAndFocus(suppressNavigateAfterEdit = false): void {
-        this.stopRowOrCellEdit();
+    public stopEditingAndFocus(suppressNavigateAfterEdit: boolean = false, event: Event | null = null): void {
+        this.stopRowOrCellEdit(false, event);
         this.focusCell(true);
 
         if (!suppressNavigateAfterEdit) {
@@ -1067,7 +1068,7 @@ export class CellCtrl extends BeanStub {
         const fullRowEdit = this.beans.gridOptionsWrapper.isFullRowEdit();
 
         if (!cellFocused && !fullRowEdit && this.editing) {
-            this.stopRowOrCellEdit();
+            this.stopRowOrCellEdit(false, null);
         }
     }
 

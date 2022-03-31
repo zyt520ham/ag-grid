@@ -1672,7 +1672,7 @@ export class GridApi {
 
     /** If a cell is editing, it stops the editing. Pass `true` if you want to cancel the editing (i.e. don't accept changes). */
     public stopEditing(cancel: boolean = false): void {
-        this.rowRenderer.stopEditing(cancel);
+        this.rowRenderer.stopEditing(cancel, null);
     }
 
     /** Start editing the provided cell. If another cell is editing, the editing will be stopped in that other cell. */

@@ -528,9 +528,9 @@ export class RowRenderer extends BeanStub {
         }
     }
 
-    public stopEditing(cancel: boolean = false) {
+    public stopEditing(cancel: boolean, event: Event | null) {
         this.getAllRowCtrls().forEach(rowCtrl => {
-            rowCtrl.stopEditing(cancel);
+            rowCtrl.stopEditing(cancel, event);
         });
     }
 

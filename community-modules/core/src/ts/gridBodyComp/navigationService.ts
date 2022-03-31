@@ -425,7 +425,7 @@ export class NavigationService extends BeanStub {
         // has editable function (eg colDef.editable=func() ) and it depends on the
         // result of this cell, so need to save updates from the first edit, in case
         // the value is referenced in the function.
-        previousCell.stopEditing();
+        previousCell.stopEditing(false, event);
 
         // find the next cell to start editing
         const nextCell = this.findNextCellToFocusOn(previousPos, backwards, true) as CellCtrl;
@@ -459,7 +459,7 @@ export class NavigationService extends BeanStub {
 
         if (!rowsMatch) {
             const pRow = previousCell.getRowCtrl();
-            pRow!.stopEditing();
+            pRow!.stopEditing(false, event);
 
             const nRow = nextCell.getRowCtrl();
             nRow!.startRowEditing(undefined, undefined, undefined, event);
