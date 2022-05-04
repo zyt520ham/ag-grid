@@ -15,6 +15,7 @@ import { ChartAxis, ChartAxisDirection } from "./chartAxis";
 import { createId } from "../util/id";
 import { PlacedLabel, placeLabels, PointLabelDatum } from "../util/labelPlacement";
 import { AgChartOptions } from "./agChartOptions";
+import { debouncedAnimationFrame } from "../util/render";
 
 const defaultTooltipCss = `
 .ag-chart-tooltip {
@@ -1075,10 +1076,15 @@ export abstract class Chart extends Observable {
             if (this.tooltip.delay > 0) {
                 this.tooltip.toggle(false);
             }
-            this.handleTooltip(event);
+            this.lastTooltipEvent = event;
+            this.handleTooltipTrigger.schedule();
         }
     }
 
+    private lastTooltipEvent?: MouseEvent = undefined;
+    private handleTooltipTrigger = debouncedAnimationFrame(({ count }) => {
+        this.handleTooltip(this.lastTooltipEvent!);
+    });
     protected handleTooltip(event: MouseEvent) {
         const { lastPick, tooltip: { tracking: tooltipTracking } } = this;
         const { offsetX, offsetY } = event;
