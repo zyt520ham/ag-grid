@@ -146,7 +146,7 @@ The example below demonstrates how the `count` property of the number axis can b
 
 ## Axis Labels
 
-The axis renders a label next to every tick to show the tick's value. Chart axis labels support the same font and colour options as the axis title. Additionally, the distance of the labels from the ticks and their rotation can be configured via the `padding`, `rotation` and `autoRotate` properties respectively.
+The axis renders a label next to every tick to show the tick's value. Chart axis labels support the same font and colour options as the axis title. Additionally, the distance of the labels from the ticks and their rotation can be configured via the `padding`, `rotation` and `autoRotation` properties respectively.
 
 ### Label Formatting
 
@@ -317,7 +317,7 @@ labels.
 Three rotation approaches are available:
 - No rotation. X-axis labels are parallel to the axis, Y-axis labels are perpendicular.
 - Setting a fixed rotation from the axis via the `rotation` property.
-- Setting an automatically applied rotation from the axis via the `autoRotate` property. Rotation is applied if any
+- Setting an automatically applied rotation from the axis via the `autoRotation` property. Rotation is applied if any
   label will be wider than the gap between ticks.
 
 Label skipping is performed automatically when we decide there is a high likelihood of collisions.
@@ -326,13 +326,13 @@ Label skipping is performed automatically when we decide there is a high likelih
 | Label skipping isn't guaranteed to avoid overlapping labels, but will significantly reduce the chance
 | of this happening out-of-the-box. The more uniform the size of labels, the more accurate it will be.
 
-If `autoRotate` is enabled, rotation will be attempted first to find a label fit, before label skipping applies.
-Category axes have `autoRotate` enabled by default with a setting of `335`.
+If `autoRotation` is enabled, rotation will be attempted first to find a label fit, before label skipping applies.
+Category axes have `autoRotation` enabled by default with a setting of `335`.
 
 The following example demonstrates label rotation and skipping:
 - There is a grab handle in the bottom right to allow resizing of the chart to see how labels change with available
   space.
-- Initially both axes have defaults applied. The X-axis is a category axis so `autoRotate` is enabled by default.
+- Initially both axes have defaults applied. The X-axis is a category axis so `autoRotation` is enabled by default.
 - The first row of buttons at the top change the configuration of both axes to allow all rotation behaviours to be
   viewed.
 - The second row of buttons allow switching between X-axis types and labels.

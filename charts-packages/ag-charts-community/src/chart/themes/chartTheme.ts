@@ -92,7 +92,7 @@ export class ChartTheme {
                 rotation: 0,
                 color: 'rgb(87, 87, 87)',
                 formatter: undefined,
-                autoRotate: false
+                autoRotation: false
             },
             line: {
                 width: 1,
@@ -276,7 +276,7 @@ export class ChartTheme {
                 ...ChartTheme.getAxisDefaults(),
                 label: {
                     ...ChartTheme.getAxisDefaults().label,
-                    autoRotate: true
+                    autoRotation: true
                 }
             },
             groupedCategory: {

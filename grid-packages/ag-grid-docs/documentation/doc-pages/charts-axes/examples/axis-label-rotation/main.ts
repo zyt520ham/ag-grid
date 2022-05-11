@@ -45,7 +45,7 @@ function reset() {
       ...(axis.label || {}),
     };
     delete axis.label['rotation'];
-    delete axis.label['autoRotate'];
+    delete axis.label['autoRotation'];
   });
   columnSeries.xKey = 'year';
   agCharts.AgChart.update(chart, options);
@@ -55,7 +55,7 @@ function disableRotation() {
   options.axes?.forEach((axis) => {
     axis.label = {
       ...(axis.label || {}),
-      autoRotate: false,
+      autoRotation: false,
     };
     delete axis.label['rotation'];
   });
@@ -67,7 +67,7 @@ function fixedRotation() {
     axis.label = {
       ...(axis.label || {}),
       rotation: 45,
-      autoRotate: false,
+      autoRotation: false,
     };
   });
   agCharts.AgChart.update(chart, options);
@@ -77,7 +77,7 @@ function autoRotation() {
   options.axes?.forEach((axis) => {
     axis.label = {
       ...(axis.label || {}),
-      autoRotate: true,
+      autoRotation: true,
     };
     delete axis.label['rotation'];
   });
