@@ -32,7 +32,7 @@ export class SortStage extends BeanStub {
             // rolling out to everyone.
             && this.gridOptionsWrapper.isDeltaSort();
 
-        const sortContainsGroupColumns = sortOptions.some(opt => !!opt.column.getColDef().showRowGroup);
+        const sortContainsGroupColumns = sortOptions.some(opt => !!this.columnModel.getGroupDisplayColumnForGroup(opt.column.getId()));
 
         this.sortService.sort(sortOptions, sortActive, deltaSort, params.rowNodeTransactions, params.changedPath, sortContainsGroupColumns);
     }

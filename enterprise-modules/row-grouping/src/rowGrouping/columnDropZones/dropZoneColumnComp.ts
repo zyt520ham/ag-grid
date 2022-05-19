@@ -21,7 +21,9 @@ import {
     VirtualList,
     KeyCode,
     _,
+    SortController,
 } from "@ag-grid-community/core";
+import { TDropZone } from "./baseDropZonePanel";
 
 export interface ColumnRemoveEvent extends AgEvent { }
 
@@ -33,6 +35,10 @@ export class DropZoneColumnComp extends Component {
         `<span role="option" tabindex="0">
           <span ref="eDragHandle" class="ag-drag-handle ag-column-drop-cell-drag-handle" role="presentation"></span>
           <span ref="eText" class="ag-column-drop-cell-text" aria-hidden="true"></span>
+          <span ref="eSortOrder" class="ag-sort-order" aria-hidden="true"></span>
+          <span ref="eSortAsc" class="ag-sort-ascending-icon" aria-hidden="true"></span>
+          <span ref="eSortDesc" class="ag-sort-descending-icon" aria-hidden="true"></span>
+          <span ref="eSortNone" class="ag-sort-none-icon" aria-hidden="true"></span>
           <span ref="eButton" class="ag-column-drop-cell-button" role="presentation"></span>
         </span>`;
 
@@ -42,10 +48,16 @@ export class DropZoneColumnComp extends Component {
     @Optional('aggFuncService') private readonly aggFuncService: IAggFuncService;
     @Autowired('columnApi') private readonly columnApi: ColumnApi;
     @Autowired('gridApi') private readonly gridApi: GridApi;
+    @Autowired('sortController') private readonly sortController: SortController;
     
     @RefSelector('eText') private eText: HTMLElement;
     @RefSelector('eDragHandle') private eDragHandle: HTMLElement;
     @RefSelector('eButton') private eButton: HTMLElement;
+
+    @RefSelector('eSortAsc') private eSortAsc: HTMLElement;
+    @RefSelector('eSortDesc') private eSortDesc: HTMLElement;
+    @RefSelector('eSortNone') private eSortNone: HTMLElement;
+    @RefSelector('eSortOrder') private eSortOrder: HTMLElement;
 
     private displayName: string | null;
     private popupShowing = false;
@@ -54,7 +66,7 @@ export class DropZoneColumnComp extends Component {
         private column: Column,
         private dragSourceDropTarget: DropTarget,
         private ghost: boolean,
-        private valueColumn: boolean,
+        private dropZonePurpose: TDropZone,
         private horizontal: boolean
     ) {
         super();
@@ -73,6 +85,7 @@ export class DropZoneColumnComp extends Component {
 
         this.eDragHandle.appendChild(_.createIconNoSpan('columnDrag', this.gridOptionsWrapper)!);
         this.eButton.appendChild(_.createIconNoSpan('cancel', this.gridOptionsWrapper)!);
+        this.setupSort();
 
         this.displayName = this.columnModel.getDisplayNameForColumn(this.column, 'columnDrop');
         this.setupComponents();
@@ -87,7 +100,7 @@ export class DropZoneColumnComp extends Component {
 
         let extraDescription = '';
 
-        if (this.valueColumn && !isFunctionsReadOnly) {
+        if (this.isAggregationZone() && !isFunctionsReadOnly) {
             extraDescription = translate('ariaDropZoneColumnValueItemDescription', 'Press ENTER to change the aggregation type');
         }
 
@@ -105,6 +118,84 @@ export class DropZoneColumnComp extends Component {
         refresh();
 
         this.addManagedListener(this.eventService, Events.EVENT_NEW_COLUMNS_LOADED, refresh);
+    }
+
+    private onSortChanged(): void {
+        if (this.eSortAsc) {
+            this.eSortAsc.classList.toggle('ag-hidden', !this.column.isSortAscending());
+        }
+
+        if (this.eSortDesc) {
+            this.eSortDesc.classList.toggle('ag-hidden', !this.column.isSortDescending());
+        }
+
+        if (this.eSortNone) {
+            const alwaysHideNoSort = !this.column.getColDef().unSortIcon && !this.gridOptionsWrapper.isUnSortIcon();
+            this.eSortNone.classList.toggle('ag-hidden', alwaysHideNoSort || !this.column.isSortNone());
+        }
+    }
+
+    public setupSort(): void {
+        const canSort = this.column.getColDef().sortable;
+        const isGroupingZone = this.isGroupingZone();
+        if (!canSort || !isGroupingZone) {
+            return;
+        }
+
+        this.setupSortIcons();
+
+        const sortUsingCtrl = this.gridOptionsWrapper.isMultiSortKeyCtrl();
+
+        // add the event on the header, so when clicked, we do sorting
+        if (this.eText) {
+            this.addManagedListener(this.eText, 'click', (event: MouseEvent) => {
+                const multiSort = sortUsingCtrl ? (event.ctrlKey || event.metaKey) : event.shiftKey;
+                this.sortController.progressSort(this.column, multiSort, 'uiColumnSorted');
+                event.preventDefault();
+            });
+        }
+
+        this.addManagedListener(this.column, Column.EVENT_SORT_CHANGED, this.onSortChanged.bind(this));
+        this.onSortChanged();
+
+        this.addManagedListener(this.eventService, Events.EVENT_SORT_CHANGED, this.setMultiSortOrder.bind(this));
+        this.setMultiSortOrder();
+    }
+
+    // we listen here for global sort events, NOT column sort events, as we want to do this
+    // when sorting has been set on all column (if we listened just for our col (where we
+    // set the asc / desc icons) then it's possible other cols are yet to get their sorting state.
+    private setMultiSortOrder(): void {
+        if (!this.eSortOrder) { return; }
+
+        const col = this.column;
+        const allColumnsWithSorting = this.sortController.getColumnsWithSortingOrdered();
+        const indexThisCol = allColumnsWithSorting.indexOf(col);
+        const moreThanOneColSorting = allColumnsWithSorting.length > 1;
+        const showIndex = col.isSorting() && moreThanOneColSorting;
+
+        _.setDisplayed(this.eSortOrder, showIndex);
+
+        if (indexThisCol >= 0) {
+            this.eSortOrder.innerHTML = (indexThisCol + 1).toString();
+        } else {
+            _.clearElement(this.eSortOrder);
+        }
+    }
+
+    private setupSortIcons(): void {
+        this.addInIcon('sortAscending', this.eSortAsc, this.column);
+        this.addInIcon('sortDescending', this.eSortDesc, this.column);
+        this.addInIcon('sortUnSort', this.eSortNone, this.column);
+    }
+
+    private addInIcon(iconName: string, eParent: HTMLElement, column: Column): void {
+        if (eParent == null) { return; }
+
+        const eIcon = _.createIconNoSpan(iconName, this.gridOptionsWrapper, column);
+        if (eIcon) {
+            eParent.appendChild(eIcon);
+        }
     }
 
     private addDragSource(): void {
@@ -137,7 +228,7 @@ export class DropZoneColumnComp extends Component {
             this.addCssClass('ag-column-drop-cell-ghost');
         }
 
-        if (this.valueColumn && !this.gridOptionsWrapper.isFunctionsReadOnly()) {
+        if (this.isAggregationZone() && !this.gridOptionsWrapper.isFunctionsReadOnly()) {
             this.addGuiEventListener('click', this.onShowAggFuncSelection.bind(this));
         }
     }
@@ -156,7 +247,7 @@ export class DropZoneColumnComp extends Component {
                 this.dispatchEvent(agEvent);
             }
 
-            if (isEnter && this.valueColumn && !this.gridOptionsWrapper.isFunctionsReadOnly()) {
+            if (isEnter && this.isAggregationZone() && !this.gridOptionsWrapper.isFunctionsReadOnly()) {
                 e.preventDefault();
                 this.onShowAggFuncSelection();
             }
@@ -178,7 +269,7 @@ export class DropZoneColumnComp extends Component {
         const name = this.displayName as string;
         let aggFuncName: string = '';
 
-        if (this.valueColumn) {
+        if (this.isAggregationZone()) {
             const aggFunc = this.column.getAggFunc();
             // if aggFunc is a string, we can use it, but if it's a function, then we swap with 'func'
             const aggFuncString = typeof aggFunc === 'string' ? aggFunc : 'agg';
@@ -191,7 +282,7 @@ export class DropZoneColumnComp extends Component {
 
     private setTextValue(): void {
         const { name, aggFuncName } = this.getColumnAndAggFuncName();
-        const displayValue = this.valueColumn ? `${aggFuncName}(${name})` : name;
+        const displayValue = this.isAggregationZone() ? `${aggFuncName}(${name})` : name;
         const displayValueSanitised: any = _.escapeString(displayValue);
 
         this.eText.innerHTML = displayValueSanitised;
@@ -303,6 +394,14 @@ export class DropZoneColumnComp extends Component {
         suffix = suffix ? `-${suffix}` : '';
         const direction = this.horizontal ? 'horizontal' : 'vertical';
         el.classList.add(`ag-column-drop-cell${suffix}`, `ag-column-drop-${direction}-cell${suffix}`);
+    }
+
+    private isAggregationZone() {
+        return this.dropZonePurpose === 'aggregation';
+    }
+
+    private isGroupingZone() {
+        return this.dropZonePurpose === 'rowGroup';
     }
 }
 
